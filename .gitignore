@@ -5,4 +5,7 @@ dist
 .nuxt
 .env
 .idea/
-scripts/fetchData.ts
+scripts/fetchLines.ts
+scripts/fetchWaypoints.ts
+.vercel
+.env*.local

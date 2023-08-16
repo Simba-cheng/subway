@@ -10,7 +10,9 @@
     "lint": "eslint .",
     "postinstall": "nuxi prepare",
     "generate": "nuxi generate",
-    "start:generate": "npx serve .output/public"
+    "start:generate": "npx serve .output/public",
+    "data:lines":"tsx ./scripts/fetchLines",
+    "data:waypoints":"tsx ./scripts/fetchWaypoints"
   },
   "dependencies": {
     "axios": "^1.4.0",
