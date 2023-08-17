@@ -1,23 +1,13 @@
 <script setup lang="ts">
-const online = useOnline()
+// @ts-expect-error no type provided
+import { MapboxMap } from '@studiometa/vue-mapbox-gl'
+import 'mapbox-gl/dist/mapbox-gl.css'
+
+const config = useRuntimeConfig()
 </script>
 
 <template>
-  <div>
-    <Logos mb-6 />
-    <Suspense>
-      <ClientOnly>
-        <PageView v-if="online" />
-        <div v-else text-gray:80>
-          You're offline
-        </div>
-      </ClientOnly>
-      <template #fallback>
-        <div italic op50>
-          <span animate-pulse>Loading...</span>
-        </div>
-      </template>
-    </Suspense>
-    <InputEntry />
-  </div>
+  <MapboxMap :access-token="config.MAP_BOX_TOKEN" map-style="mapbox://styles/mapbox/streets-v11" :style="{ height: '400px' }">
+    <!-- <MapboxMarker position="[0, 0]" /> -->
+  </MapboxMap>
 </template>

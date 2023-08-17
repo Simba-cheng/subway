@@ -2,6 +2,12 @@ import { pwa } from './config/pwa'
 import { appDescription } from './constants/index'
 
 export default defineNuxtConfig({
+  runtimeConfig: {
+    public: {
+      MAP_BOX_TOKEN: process.env.MAP_BOX_TOKEN,
+    },
+  },
+
   modules: [
     '@vueuse/nuxt',
     '@unocss/nuxt',
@@ -9,7 +15,6 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
   ],
-
   experimental: {
     // when using generate, payload js assets included in sw precache manifest
     // but missing on offline, disabling extraction it until fixed
@@ -60,4 +65,5 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
+
 })
