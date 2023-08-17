@@ -2,6 +2,8 @@ import { pwa } from './config/pwa'
 import { appDescription } from './constants/index'
 
 export default defineNuxtConfig({
+  alias: {
+  },
   runtimeConfig: {
     public: {
       MAP_BOX_TOKEN: process.env.MAP_BOX_TOKEN,
@@ -65,5 +67,4 @@ export default defineNuxtConfig({
   devtools: {
     enabled: true,
   },
-
 })
