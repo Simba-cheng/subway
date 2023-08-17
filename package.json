@@ -11,11 +11,13 @@
     "postinstall": "nuxi prepare",
     "generate": "nuxi generate",
     "start:generate": "npx serve .output/public",
-    "data:lines":"tsx ./scripts/fetchLines",
-    "data:waypoints":"tsx ./scripts/fetchWaypoints"
+    "data:lines": "tsx ./scripts/fetchLines",
+    "data:polyline": "tsx ./scripts/fetchPolyline"
   },
   "dependencies": {
     "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "lodash-es": "^4.17.21",
     "vue-tsc": "^1.6.4"
   },
   "devDependencies": {

@@ -6,6 +6,6 @@ dist
 .env
 .idea/
 scripts/fetchLines.ts
-scripts/fetchWaypoints.ts
+scripts/fetchPolyline.ts
 .vercel
 .env*.local
