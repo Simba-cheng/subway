@@ -2,54 +2,51 @@
 // @ts-expect-error no type provided
 import { MapboxMap } from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import { type LayersList } from '@deck.gl/core/typed'
+import hexRGB from 'hex-rgb'
+import subway from '~/datasource/subway.json'
 
-const AIR_PORTS
-  = 'https://d2ad6b4ur7yvpq.cloudfront.net/naturalearth-3.3.0/ne_10m_airports.geojson'
 const config = useRuntimeConfig()
 const map = ref()
-const mapCenter = ref([0.45, 51.47])
+const mapCenter = ref([113.863048, 22.575149])
 
 watch(map, async (map) => {
-  const INITIAL_VIEW_STATE = {
-    latitude: 37.8,
-    longitude: -122.45,
-    zoom: 4,
-  }
-
-  const { GeoJsonLayer, ArcLayer } = await import('@deck.gl/layers/typed').then(modules => ({ GeoJsonLayer: modules.GeoJsonLayer, ArcLayer: modules.ArcLayer }))
+  const { ScatterplotLayer } = await import('@deck.gl/layers/typed')
   const DeckOverlay = await import('@deck.gl/mapbox/typed').then(module => module.MapboxOverlay)
 
-  const deckgl = new DeckOverlay({
-    initialViewState: INITIAL_VIEW_STATE,
-    controller: true,
-    layers: [
-      new GeoJsonLayer({
-        id: 'airports',
-        data: AIR_PORTS,
-        // Styles
-        filled: true,
-        pointRadiusMinPixels: 2,
-        pointRadiusScale: 2000,
-        getPointRadius: f => 11 - f.properties.scalerank,
-        getFillColor: [200, 0, 80, 180],
-        // Interactive props
+  const layers: LayersList[] = []
+  subway.forEach((city) => {
+    const cityLayer: LayersList = []
+    city.lines.forEach((line) => {
+      const lineColor = hexRGB(line.color, { format: 'array', alpha: 255 })
+
+      cityLayer.push(new ScatterplotLayer({
+        id: `${city.cityname}${line.name} stations`,
+        data: line.stations,
         pickable: true,
-        autoHighlight: true,
-        onClick: info =>
-          info.object && alert(`${info.object.properties.name} (${info.object.properties.abbrev})`),
-      }),
-      new ArcLayer({
-        id: 'arcs',
-        data: AIR_PORTS,
-        dataTransform: d => d.features.filter(f => f.properties.scalerank < 4),
-        // Styles
-        getSourcePosition: f => [-0.4531566, 51.4709959], // London
-        getTargetPosition: f => f.geometry.coordinates,
-        getSourceColor: [0, 128, 200],
-        getTargetColor: [200, 0, 80],
-        getWidth: 1,
-      }),
-    ],
+        opacity: 0.8,
+        stroked: true,
+        filled: true,
+        // 换乘站点特殊样式
+        radiusScale: 12,
+        radiusMinPixels: 4,
+        radiusMaxPixels: 6,
+        lineWidthMinPixels: 1,
+        getPosition(data) {
+          return transformGCJ02(transformStringToGCJ02(data.coord))
+        },
+        getFillColor: lineColor,
+      }))
+    })
+
+    layers.push(cityLayer)
+  })
+
+  const deckgl = new DeckOverlay({
+    // initialViewState: INITIAL_VIEW_STATE,
+    // controller: true,
+
+    layers,
   })
 
   map.addControl(deckgl)

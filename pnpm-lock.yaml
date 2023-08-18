@@ -23,6 +23,12 @@ dependencies:
   dotenv:
     specifier: ^16.3.1
     version: 16.3.1
+  gcoord:
+    specifier: ^1.0.5
+    version: 1.0.5
+  hex-rgb:
+    specifier: ^5.0.0
+    version: 5.0.0
   lodash-es:
     specifier: ^4.17.21
     version: 4.17.21
@@ -4007,12 +4013,12 @@ packages:
     resolution: {integrity: sha512-nne9/IiQ/hzIhY6pdDnbBtz7DjPTKrY00P/zvPSm5pOFkl6xuGrGnXn/VtTNNfNtAfZ9/1RtehkszU9qcTii0Q==}
     dev: true
 
-  /acorn-import-assertions@1.8.0(acorn@8.8.2):
+  /acorn-import-assertions@1.8.0(acorn@8.10.0):
     resolution: {integrity: sha512-m7VZ3jwz4eK6A4Vtt8Ew1/mNbP24u0FhdyfA7fSvnJR6LMdfOYnmuIrrJAgrYfYJ10F/otaHTtrtrtmHdMNzEw==}
     peerDependencies:
       acorn: ^8
     dependencies:
-      acorn: 8.8.2
+      acorn: 8.10.0
     dev: true
 
   /acorn-jsx@5.3.2(acorn@8.8.2):
@@ -6196,6 +6202,11 @@ packages:
       wide-align: 1.1.5
     dev: true
 
+  /gcoord@1.0.5:
+    resolution: {integrity: sha512-IJjyWd7Q57K36SzoEAZ5LEnhFVXVR3996WJp/3NlleXVBzb/GcORfNhCw8JuZPvSGloHgG0yhPFK4Aqf0t/ohg==}
+    engines: {node: '>=16.11.0'}
+    dev: false
+
   /gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
     engines: {node: '>=6.9.0'}
@@ -6518,6 +6529,11 @@ packages:
   /he@1.2.0:
     resolution: {integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==}
     hasBin: true
+
+  /hex-rgb@5.0.0:
+    resolution: {integrity: sha512-NQO+lgVUCtHxZ792FodgW0zflK+ozS9X9dwGp9XvvmPlH7pyxd588cn24TD3rmPm/N0AIRXF10Otah8yKqGw4w==}
+    engines: {node: '>=12'}
+    dev: false
 
   /hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
@@ -10834,8 +10850,8 @@ packages:
       '@webassemblyjs/ast': 1.11.1
       '@webassemblyjs/wasm-edit': 1.11.1
       '@webassemblyjs/wasm-parser': 1.11.1
-      acorn: 8.8.2
-      acorn-import-assertions: 1.8.0(acorn@8.8.2)
+      acorn: 8.10.0
+      acorn-import-assertions: 1.8.0(acorn@8.10.0)
       browserslist: 4.21.5
       chrome-trace-event: 1.0.3
       enhanced-resolve: 5.10.0
