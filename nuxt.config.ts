@@ -12,10 +12,10 @@ export default defineNuxtConfig({
 
   modules: [
     '@vueuse/nuxt',
-    '@unocss/nuxt',
     '@pinia/nuxt',
     '@nuxtjs/color-mode',
     '@vite-pwa/nuxt',
+    '@nuxthq/ui',
   ],
   experimental: {
     // when using generate, payload js assets included in sw precache manifest
@@ -24,10 +24,6 @@ export default defineNuxtConfig({
     inlineSSRStyles: false,
     renderJsonPayloads: true,
   },
-
-  css: [
-    '@unocss/reset/tailwind.css',
-  ],
 
   colorMode: {
     classSuffix: '',
