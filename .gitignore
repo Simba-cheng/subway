@@ -5,7 +5,5 @@ dist
 .nuxt
 .env
 .idea/
-scripts/fetchLines.ts
-scripts/fetchPolyline.ts
 .vercel
 .env*.local

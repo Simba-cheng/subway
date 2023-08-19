@@ -43,9 +43,6 @@ watch(map, async (map) => {
   })
 
   const deckgl = new DeckOverlay({
-    // initialViewState: INITIAL_VIEW_STATE,
-    // controller: true,
-
     layers,
   })
 
@@ -54,7 +51,7 @@ watch(map, async (map) => {
 </script>
 
 <template>
-  <MapboxMap :style="{ height: '100vh', width: '100vw' }" :access-token="config.MAP_BOX_TOKEN" map-style="https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json" :center="mapCenter" :zoom="8" @mb-created="(mapboxInstance:any) => map = mapboxInstance">
+  <MapboxMap :style="{ height: '100vh', width: '100vw' }" :access-token="config.MAP_BOX_TOKEN" map-style="mapbox://styles/mapbox/light-v10" :center="mapCenter" :zoom="8" @mb-created="(mapboxInstance:any) => map = mapboxInstance">
     <!-- <MapboxMarker position="[0, 0]" /> -->
   </MapboxMap>
 </template>
