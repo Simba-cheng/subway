@@ -28,8 +28,8 @@ watch(map, async (map) => {
         filled: true,
         // 换乘站点特殊样式
         radiusScale: 12,
-        radiusMinPixels: 4,
-        radiusMaxPixels: 6,
+        radiusMinPixels: 2,
+        radiusMaxPixels: 2,
         lineWidthMinPixels: 1,
         getPosition(data) {
           return transformGCJ02([data.lng, data.lat])
@@ -37,8 +37,8 @@ watch(map, async (map) => {
         getFillColor: lineColor,
       }))
 
-      if (line.polyline?.length) {
-        const polylineData = extractPolyline(line.polyline)
+      if (line.polyline?.length || line.fullPolyline.length) {
+        const polylineData = line.fullPolyline.length ? line.fullPolyline : extractPolyline(line.polyline)
         cityLayer.push(new PathLayer<[number, number][]>({
           id: `${city.cityname}${line.name} polyline`,
           data: polylineData,
