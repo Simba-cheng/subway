@@ -61,6 +61,9 @@ devDependencies:
   '@pinia/nuxt':
     specifier: ^0.4.10
     version: 0.4.10(rollup@2.79.1)(typescript@5.0.4)(vue@3.2.47)
+  '@types/lodash-es':
+    specifier: ^4.17.8
+    version: 4.17.8
   '@unocss/eslint-config':
     specifier: ^0.51.12
     version: 0.51.12(eslint@8.40.0)(typescript@5.0.4)
@@ -3118,6 +3121,16 @@ packages:
     dependencies:
       '@types/node': 18.14.0
     dev: false
+
+  /@types/lodash-es@4.17.8:
+    resolution: {integrity: sha512-euY3XQcZmIzSy7YH5+Unb3b2X12Wtk54YWINBvvGQ5SmMvwb11JQskGsfkH/5HXK77Kr8GF0wkVDIxzAisWtog==}
+    dependencies:
+      '@types/lodash': 4.14.197
+    dev: true
+
+  /@types/lodash@4.14.197:
+    resolution: {integrity: sha512-BMVOiWs0uNxHVlHBgzTIqJYmj+PgCo4euloGF+5m4okL3rEYzM2EEv78mw8zWSMM57dM7kVIgJ2QDvwHSoCI5g==}
+    dev: true
 
   /@types/mapbox-gl@2.7.13:
     resolution: {integrity: sha512-qNffhTdYkeFl8QG9Q1zPPJmcs8PvHgmLa1PcwP1rxvcfMsIgcFr/FnrCttG0ZnH7Kzdd7xfECSRNTWSr4jC3PQ==}
