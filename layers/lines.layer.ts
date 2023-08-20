@@ -3,24 +3,25 @@ import { CompositeLayer } from '@deck.gl/core/typed'
 import { PathLayer, ScatterplotLayer } from '@deck.gl/layers/typed'
 import type { Line, Station } from '~/types'
 
-class LineLayer extends CompositeLayer<{ data: Line }> {
+class LineLayer extends CompositeLayer<{ data: Line; selected?: boolean }> {
   renderLayers() {
     const line = this.props.data
+    const selected = this.props.selected
     if (!line)
       return []
     return [new PathLayer<[number, number][]>({
-      id: `${line.id}polyline`,
+      id: `${line.id}polyline${selected && 'selected'}`,
       data: line.polyline,
       getColor: line.color,
       pickable: true,
       autoHighlight: false,
       widthScale: 15,
-      widthMinPixels: 2,
-      widthMaxPixels: 3,
-      getWidth: 5,
+      widthMinPixels: selected ? 5 : 2,
+      widthMaxPixels: selected ? 7 : 3,
+
       getPath: () => line.polyline,
     }), new ScatterplotLayer<Station>({
-      id: `${line.id}stations`,
+      id: `${line.id}stations${selected && 'selected'}`,
       data: line.stations,
       opacity: 0.8,
       stroked: true,

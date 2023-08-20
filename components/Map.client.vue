@@ -4,6 +4,7 @@ import { MapboxMap } from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import type { MapboxOverlay } from '@deck.gl/mapbox/typed'
 import LineLayer from '~/layers/lines.layer'
+import type { Line } from '~/types'
 
 const config = useRuntimeConfig()
 const map = ref()
@@ -21,15 +22,30 @@ const selectedCityIdMap = computed(() => selectedCities.value.reduce<Record<stri
   ...ret,
   [curr.id]: true,
 }), {}))
+const selectedLine = ref<Line | null>(null)
 
 watchEffect(() => {
-  const nextLayer = dataset.value.filter(city => selectedCityIdMap.value[city.id]).map(city => city.lines.map(line => new LineLayer({
+  const selectedLineLayer = selectedLine.value
+    ? new LineLayer({
+      id: `selected${selectedLine.value?.id}`,
+      data: selectedLine.value,
+      selected: true,
+      onClick: () => {
+        selectedLine.value = null
+      },
+    })
+    : null
+
+  const nextLines = dataset.value.filter(city => selectedCityIdMap.value[city.id]).map(city => city.lines.map(line => new LineLayer({
     id: line.id,
     data: line,
+    visible: !selectedLineLayer,
+    onClick() {
+      selectedLine.value = line
+    },
   })))
-
   deckgl.value?.setProps({
-    layers: [...nextLayer],
+    layers: [nextLines, selectedLineLayer],
   })
 })
 
