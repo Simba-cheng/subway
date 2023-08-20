@@ -3,8 +3,8 @@ import rawData from '~/datasource/data.json'
 import type { Dataset } from '~/types'
 
 export function useDataset() {
-  return computed<Dataset>(() => {
-    return rawData.map(city => ({
+  return ref<Dataset>(
+    rawData.map(city => ({
       id: city.id,
       name: city.name,
       lines: city.lines.map(line => ({
@@ -14,6 +14,6 @@ export function useDataset() {
         stations: line.stations.map(station => ({ id: station.id, name: station.name, coord: transformGCJ02([station.lng, station.lat]) })),
         polyline: (line.fullPolyline.length ? line.fullPolyline : extractPolyline(line.polyline)) as [number, number][],
       })),
-    }))
-  })
+    })),
+  )
 }
