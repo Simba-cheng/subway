@@ -1,2 +1,21 @@
-export interface City { id: string; label: string; lines: { id: string; name: string; color: string }[] }
+import type { Color, Position } from '@deck.gl/core/typed'
+
+export interface Station {
+  id: string
+  name: string
+  coord: Position
+}
+
+export interface Line {
+  id: string
+  name: string
+  color: Color
+  stations: Station[]
+  polyline: [number, number][]
+}
+
+export interface City { id: string; name: string; lines: Line[] }
+
+export type Dataset = City[]
+
 export type CitySelections = City[]
