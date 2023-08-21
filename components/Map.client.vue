@@ -50,6 +50,14 @@ watchEffect(() => {
     stationVisible: zoom.value >= 10,
     onClick() {
       selectedLine.value = line
+      map.value.fitBounds(line.bound, {
+        padding: {
+          top: 25,
+          right: 150,
+          bottom: 25,
+          left: 25,
+        },
+      })
     },
   })))
   deckgl.value?.setProps({
@@ -59,7 +67,7 @@ watchEffect(() => {
 
 async function onMapCreated(mapInstance: any) {
   const DeckOverlay = await import('@deck.gl/mapbox/typed').then(module => module.MapboxOverlay)
-  deckgl.value = new DeckOverlay({})
+  deckgl.value = new DeckOverlay({ getCursor: () => selectedLine ? 'pointer' : 'default' })
   mapInstance.addControl(deckgl.value)
 
   map.value = mapInstance

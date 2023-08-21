@@ -1,5 +1,7 @@
 import type { Color, Position } from '@deck.gl/core/typed'
 
+export type Bound = [[number, number], [number, number]]
+
 export interface Station {
   id: string
   name: string
@@ -10,6 +12,7 @@ export interface Line {
   id: string
   name: string
   color: Color
+  bound: Bound
   stations: Station[]
   polyline: [number, number][]
 }
