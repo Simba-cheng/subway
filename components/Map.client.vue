@@ -88,11 +88,15 @@ function onZoomend() {
   <div class="fixed left-4 inset-y-4 z-[2] overflow-y-scroll scrollbar-none">
     <ul class="space-y-2">
       <li
-        v-for="city in cities" :key="city.id" class="text-xs text-zinc-300 flex items-center bg-white/90 rounded-2xl p-2 cursor-pointer" :class="selectedCityIdMap[city.id] && 'text-zinc-800'" @click="() => {
+        v-for="city in cities" :key="city.id" class="text-xs text-zinc-300 flex items-center bg-white/90 rounded-2xl p-2 cursor-pointer" :class="selectedCityIdMap[city.id] && 'text-zinc-800'" @click="(e) => {
           if (selectedCityIdMap[city.id]){
             selectedCities = selectedCities.filter(c => c.id !== city.id)
           }
           else {
+            if (e.metaKey){
+              map.fitBounds(city.bound, { padding: 25 })
+
+            }
             selectedCities.push(city)
           }
         }"
