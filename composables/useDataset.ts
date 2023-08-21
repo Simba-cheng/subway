@@ -1,14 +1,12 @@
 import hexRgb from 'hex-rgb'
 import first from 'lodash-es/first'
 import rawData from '~/datasource/data.json'
-import type { Bound, Dataset, Station } from '~/types'
+import type { Bound, Dataset, Line, Station } from '~/types'
 
 export function useDataset() {
   return ref<Dataset>(
-    rawData.map(city => ({
-      id: city.id,
-      name: city.name,
-      lines: city.lines.map((line) => {
+    rawData.map((city) => {
+      const lines = city.lines.map((line) => {
         const stations = line.stations.map(station => ({ id: station.id, name: station.name, coord: transformGCJ02([station.lng, station.lat]) }))
         return {
           id: line.id,
@@ -18,8 +16,15 @@ export function useDataset() {
           stations,
           polyline: (line.fullPolyline.length ? line.fullPolyline : extractPolyline(line.polyline)) as [number, number][],
         }
-      }),
-    })),
+      })
+
+      return {
+        id: city.id,
+        name: city.name,
+        bound: getCityBound(lines),
+        lines,
+      }
+    }),
   )
 }
 
@@ -42,6 +47,28 @@ function getLineBounds(stations: Station[]) {
     if (lat < minLat)
       minLat = lat
   })
+
+  return [[minLng, minLat], [maxLng, maxLat]] as Bound
+}
+
+function getCityBound(lines: Line[]) {
+  let minLng = Infinity
+  let minLat = Infinity
+  let maxLng = -Infinity
+  let maxLat = -Infinity
+
+  for (const line of lines) {
+    for (const [lng, lat] of line.bound) {
+      if (lng < minLng)
+        minLng = lng
+      if (lng > maxLng)
+        maxLng = lng
+      if (lat < minLat)
+        minLat = lat
+      if (lat > maxLat)
+        maxLat = lat
+    }
+  }
 
   return [[minLng, minLat], [maxLng, maxLat]] as Bound
 }
