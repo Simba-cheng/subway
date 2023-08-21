@@ -3,10 +3,12 @@ import { CompositeLayer } from '@deck.gl/core/typed'
 import { PathLayer, ScatterplotLayer } from '@deck.gl/layers/typed'
 import type { Line, Station } from '~/types'
 
-class LineLayer extends CompositeLayer<{ data: Line; selected?: boolean }> {
+class LineLayer extends CompositeLayer<{ data: Line; selected?: boolean; stationVisible?: boolean }> {
   renderLayers() {
     const line = this.props.data
     const selected = this.props.selected
+    const stationVisible = this.props.stationVisible ?? true
+
     if (!line)
       return []
     return [new PathLayer<[number, number][]>({
@@ -23,6 +25,7 @@ class LineLayer extends CompositeLayer<{ data: Line; selected?: boolean }> {
     }), new ScatterplotLayer<Station>({
       id: `${line.id}stations${selected && 'selected'}`,
       data: line.stations,
+      visible: stationVisible,
       opacity: 0.8,
       stroked: true,
       filled: true,

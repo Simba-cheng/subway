@@ -22,13 +22,20 @@ const selectedCityIdMap = computed(() => selectedCities.value.reduce<Record<stri
   ...ret,
   [curr.id]: true,
 }), {}))
+const zoom = ref<number>(0)
+
 const selectedLine = ref<Line | null>(null)
+
+watch(selectedCities, () => {
+  selectedLine.value = null
+})
 
 watchEffect(() => {
   const selectedLineLayer = selectedLine.value
     ? new LineLayer({
       id: `selected${selectedLine.value?.id}`,
       data: selectedLine.value,
+      stationVisible: true,
       selected: true,
       onClick: () => {
         selectedLine.value = null
@@ -40,6 +47,7 @@ watchEffect(() => {
     id: line.id,
     data: line,
     visible: !selectedLineLayer,
+    stationVisible: zoom.value >= 10,
     onClick() {
       selectedLine.value = line
     },
@@ -51,17 +59,21 @@ watchEffect(() => {
 
 async function onMapCreated(mapInstance: any) {
   const DeckOverlay = await import('@deck.gl/mapbox/typed').then(module => module.MapboxOverlay)
-  deckgl.value = new DeckOverlay({ })
+  deckgl.value = new DeckOverlay({})
   mapInstance.addControl(deckgl.value)
 
   map.value = mapInstance
+}
+
+function onZoomend() {
+  zoom.value = map.value.getZoom()
 }
 </script>
 
 <template>
   <MapboxMap
-    :style="{ height: '100vh', width: '100vw' }" :access-token="config.MAP_BOX_TOKEN"
-    map-style="mapbox://styles/mapbox/light-v10" :center="mapCenter" :zoom="8" @mb-created="onMapCreated"
+    class="w-screen h-screen" :access-token="config.MAP_BOX_TOKEN"
+    map-style="mapbox://styles/mapbox/light-v10" :center="mapCenter" :zoom="8" @mb-created="onMapCreated" @mb-zoomend="onZoomend"
   >
     <!-- <MapboxMarker position="[0, 0]" /> -->
   </MapboxMap>
