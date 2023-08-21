@@ -25,6 +25,7 @@
     "hex-rgb": "^5.0.0",
     "lodash-es": "^4.17.21",
     "mapbox-gl": "^2.15.0",
+    "tailwind-scrollbar": "^3.0.5",
     "vue-tsc": "^1.6.4"
   },
   "devDependencies": {
