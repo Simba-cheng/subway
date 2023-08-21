@@ -3,8 +3,9 @@
 import { MapboxMap } from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import type { MapboxOverlay } from '@deck.gl/mapbox/typed'
+import { LocateFixed } from 'lucide-vue-next'
 import LineLayer from '~/layers/lines.layer'
-import type { Line } from '~/types'
+import type { Bound, Line } from '~/types'
 
 const config = useRuntimeConfig()
 const map = ref()
@@ -15,8 +16,9 @@ const dataset = useDataset()
 interface CityOption {
   id: string
   label: string
+  bound: Bound
 }
-const cities = computed<CityOption[]>(() => dataset.value.map(city => ({ id: city.id, label: `${city.name}(${city.lines.length})` })))
+const cities = computed<CityOption[]>(() => dataset.value.map(city => ({ id: city.id, label: `${city.name}(${city.lines.length})`, bound: city.bound })))
 const selectedCities = ref<CityOption[]>([cities.value[0]])
 const selectedCityIdMap = computed(() => selectedCities.value.reduce<Record<string, true>>((ret, curr) => ({
   ...ret,
@@ -82,17 +84,36 @@ function onZoomend() {
   <MapboxMap
     class="w-screen h-screen" :access-token="config.MAP_BOX_TOKEN"
     map-style="mapbox://styles/mapbox/light-v10" :center="mapCenter" :zoom="8" @mb-created="onMapCreated" @mb-zoomend="onZoomend"
-  >
-    <!-- <MapboxMarker position="[0, 0]" /> -->
-  </MapboxMap>
-  <div class="fixed left-4 top-4 z-[2]">
-    <USelectMenu v-model="selectedCities" :options="cities" multiple>
-      <template #label>
-        <div class="max-w-[88px] truncate">
-          {{ selectedCities.map(s => s.label).join(',') }}
-        </div>
-      </template>
-    </USelectMenu>
+  />
+  <div class="fixed left-4 inset-y-4 z-[2] overflow-y-scroll scrollbar-none">
+    <ul class="space-y-2">
+      <li
+        v-for="city in cities" :key="city.id" class="text-xs text-zinc-300 flex items-center bg-white/90 rounded-2xl p-2 cursor-pointer" :class="selectedCityIdMap[city.id] && 'text-zinc-800'" @click="() => {
+          if (selectedCityIdMap[city.id]){
+            selectedCities = selectedCities.filter(c => c.id !== city.id)
+          }
+          else {
+            selectedCities.push(city)
+          }
+        }"
+      >
+        <span class="mr-2">
+          {{ city.label }}
+        </span>
+        <span class="ml-auto flex items-center space-x-2 opacity-0" :class="selectedCityIdMap[city.id] && 'opacity-100'">
+          <!-- <span class="hover:bg-slate-100 rounded-md p-0.5 cursor-pointer">
+            <EyeOff :size="11" />
+          </span> -->
+          <span
+            class="hover:bg-slate-100 rounded-md p-0.5 cursor-pointer" @click.stop="() => {
+              map.fitBounds(city.bound, { padding: 25 })
+            }"
+          >
+            <LocateFixed :size="11" />
+          </span>
+        </span>
+      </li>
+    </ul>
   </div>
   <div v-if="!!selectedLine" class="fixed right-4 top-4 backdrop-blur-lg bg-white p-4 pb-0 rounded-lg min-w-[88px] z-10">
     <h3 class="text-sm text-zinc-700">

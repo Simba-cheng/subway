@@ -17,7 +17,7 @@ export interface Line {
   polyline: [number, number][]
 }
 
-export interface City { id: string; name: string; lines: Line[] }
+export interface City { id: string; name: string; lines: Line[]; bound: Bound }
 
 export type Dataset = City[]
 
