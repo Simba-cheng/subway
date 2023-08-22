@@ -10,6 +10,7 @@ export function useDataset() {
         const stations = line.stations.map(station => ({ id: station.id, name: station.name, coord: transformGCJ02([station.lng, station.lat]) }))
         return {
           id: line.id,
+          cityId: city.id,
           name: line.name,
           bound: getLineBounds(stations),
           color: hexRgb(line.color, { format: 'array', alpha: 255 }),

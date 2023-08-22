@@ -10,6 +10,7 @@ export interface Station {
 
 export interface Line {
   id: string
+  cityId: string
   name: string
   color: Color
   bound: Bound
