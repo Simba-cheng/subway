@@ -78,6 +78,8 @@ async function onMapCreated(mapInstance: any) {
 function onZoomend() {
   zoom.value = map.value.getZoom()
 }
+
+const isControlPressing = useKeyModifier('Meta')
 </script>
 
 <template>
@@ -88,7 +90,11 @@ function onZoomend() {
   <div class="fixed left-4 inset-y-4 z-[2] overflow-y-scroll scrollbar-none">
     <ul class="space-y-2">
       <li
-        v-for="city in cities" :key="city.id" class="text-xs text-zinc-300 flex items-center bg-white/90 rounded-2xl p-2 cursor-pointer" :class="selectedCityIdMap[city.id] && 'text-zinc-800'" @click="(e) => {
+        v-for="city in cities" :key="city.id" class="text-xs text-zinc-300 flex items-center bg-white/90 rounded-2xl p-2 cursor-pointer"
+        :class="{
+          'text-zinc-800': selectedCityIdMap[city.id],
+          'cursor-zoom-in': isControlPressing,
+        }" @click="(e) => {
           if (selectedCityIdMap[city.id]){
             selectedCities = selectedCities.filter(c => c.id !== city.id)
           }
@@ -119,14 +125,30 @@ function onZoomend() {
       </li>
     </ul>
   </div>
-  <div v-if="!!selectedLine" class="fixed right-4 top-4 backdrop-blur-lg bg-white p-4 pb-0 rounded-lg min-w-[88px] z-10">
-    <h3 class="text-sm text-zinc-700">
+  <div v-if="!!selectedLine" class="fixed right-4 top-4 backdrop-blur-lg bg-white py-4 pb-0 rounded-lg min-w-[70px] z-10">
+    <h3 class="text-center text-sm text-zinc-700">
       {{ selectedLine.name }}
     </h3>
     <!-- <div class="h-px my-4 mx-2" :style="{ background: `rgb(${selectedLine.color.slice(0, 3)})` }" /> -->
     <div class="max-h-[80vh] overflow-y-scroll scrollbar-none">
-      <ul class="mt-3 text-xs space-y-3 text-stone-500 my-2">
-        <li v-for="(station, idx) in selectedLine.stations" :key="station.id">
+      <ul class="mt-3 text-xs text-stone-500 my-2 px-1">
+        <li
+          v-for="(station, idx) in selectedLine.stations" :key="station.id" class="hover:bg-zinc-100 rounded p-1.5 cursor-pointer" @click="() => {
+            // map.fitBounds(selectedLine.bound, {
+            //   padding: {
+            //     top: 25,
+            //     right: 150,
+            //     bottom: 25,
+            //     left: 25,
+            //   },
+            // })
+            map.flyTo({
+              center: station.coord,
+              essential: true,
+              zoom: 12,
+            })
+          }"
+        >
           <span class="inline-block w-2 text-right mr-2" :style="{ color: `rgb(${selectedLine.color.slice(0, 3)})` }">
             {{ idx + 1 }}
           </span>
