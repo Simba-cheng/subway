@@ -33,7 +33,7 @@ const { dataset, isCitySelected, selectCity, deselectCity, setDetailCity, select
         <span class="mr-2">
           {{ city.name }}
         </span>
-        <span class="ml-auto flex items-center space-x-2 opacity-0" :class="isCitySelected(city) && 'opacity-100'">
+        <span class="ml-auto flex items-center space-x-2 opacity-0 pointer-events-none" :class="isCitySelected(city) && 'opacity-100 pointer-events-auto'">
           <span
             class="hover:bg-slate-100 rounded-md p-0.5 cursor-pointer" @click.stop="() => {
               setDetailCity(city)
