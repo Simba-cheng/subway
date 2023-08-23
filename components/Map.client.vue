@@ -35,7 +35,7 @@ watchEffect(() => {
 
   const hoveringLineLayer = hoveringLine.value
     ? new LineLayer({
-      id: `selected${selectedLine.value?.id}`,
+      id: `hovering${selectedLine.value?.id}`,
       data: hoveringLine.value,
       stationVisible: false,
       selected: true,
@@ -53,7 +53,7 @@ watchEffect(() => {
     },
   })))
   deckgl.value?.setProps({
-    layers: [nextLines, selectedLineLayer, hoveringLineLayer],
+    layers: [nextLines, selectedLineLayer],
   })
 })
 

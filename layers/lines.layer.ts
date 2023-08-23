@@ -3,8 +3,9 @@ import { CompositeLayer } from '@deck.gl/core/typed'
 import { PathLayer, ScatterplotLayer, TextLayer } from '@deck.gl/layers/typed'
 import type { Line, Station } from '~/types'
 
-class LineLayer extends CompositeLayer<{ data: Line; selected?: boolean; stationVisible?: boolean }> {
+class LineLayer extends CompositeLayer<{ id: string; data: Line; selected?: boolean; stationVisible?: boolean }> {
   renderLayers() {
+    const id = this.props.id
     const line = this.props.data
     const selected = this.props.selected
     const stationVisible = this.props.stationVisible ?? true
@@ -13,7 +14,7 @@ class LineLayer extends CompositeLayer<{ data: Line; selected?: boolean; station
       return []
     return [
       new PathLayer<[number, number][]>({
-        id: `${line.id}polyline${selected && 'selected'}`,
+        id: `${id}${line.id}polyline${selected && 'selected'}`,
         data: line.polyline,
         getColor: line.color,
         pickable: true,
@@ -25,7 +26,7 @@ class LineLayer extends CompositeLayer<{ data: Line; selected?: boolean; station
         getPath: () => line.polyline,
       }),
       new ScatterplotLayer<Station>({
-        id: `${line.id}stations${selected && 'selected'}`,
+        id: `${id}${line.id}stations${selected && 'selected'}`,
         data: line.stations,
         visible: stationVisible,
         opacity: 0.8,
@@ -42,7 +43,7 @@ class LineLayer extends CompositeLayer<{ data: Line; selected?: boolean; station
         getPosition: data => data.coord,
       }),
       new TextLayer<Station>({
-        id: `${line.id}text${selected && 'selected'}`,
+        id: `${id}${line.id}text${selected && 'selected'}`,
         data: line.stations,
         visible: selected && stationVisible,
         pickable: true,

@@ -11,7 +11,7 @@ const emits = defineEmits<{
 
 const store = useAppStore()
 const { detailCity } = storeToRefs(store)
-const { setHoveringLine } = store
+const { setHoveringLine, selectLine } = store
 </script>
 
 <template>
@@ -21,7 +21,12 @@ const { setHoveringLine } = store
       <XCircle class="ml-auto cursor-pointer" :size="12" @click="() => emits('close')" />
     </h3>
     <ul class="text-zinc-600 space-y-1 mt-2">
-      <li v-for="line in detailCity.lines" :key="line.id" class="relative" @click="() => emits('line-select', line)" @mouseenter="() => setHoveringLine(line)" @mouseleave="() => setHoveringLine(null)">
+      <li
+        v-for="line in detailCity.lines" :key="line.id" class="relative" @click="() => {
+          emits('line-select', line)
+          selectLine(line)
+        }" @mouseenter="() => setHoveringLine(line)" @mouseleave="() => setHoveringLine(null)"
+      >
         <div class="hover:bg-zinc-50 rounded px-2 py-1 flex items-center cursor-pointer">
           <div class="h-1 w-1 rounded-full mr-1" :style="{ background: `rgb(${line.color.slice(0, 3)})` }" />
           {{ line.name }}
