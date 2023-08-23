@@ -16,7 +16,7 @@ const { dataset, isCitySelected, selectCity, deselectCity, setDetailCity, select
   <div class="fixed left-4 inset-y-4 overflow-y-scroll scrollbar-none">
     <ul class="space-y-2">
       <li
-        v-for="city in dataset" :key="city.id" class="text-xs text-zinc-300 flex items-center bg-white/90 rounded-2xl p-2 cursor-pointer"
+        v-for="city in dataset" :key="city.id" class="text-xs text-zinc-400 flex items-center bg-white/90 rounded-2xl p-2 cursor-pointer"
         :class="{
           'text-zinc-800': isCitySelected(city),
         }" @click="() => {
