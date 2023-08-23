@@ -16,7 +16,7 @@ const mapCenter = ref([113.863048, 22.575149])
 const deckgl = ref<MapboxOverlay | null>(null)
 
 const store = useAppStore()
-const { dataset, selectedLine } = storeToRefs(store)
+const { dataset, selectedLine, hoveringLine } = storeToRefs(store)
 const { selectLine, isCitySelected } = store
 const zoom = ref<number>(0)
 
@@ -33,6 +33,15 @@ watchEffect(() => {
     })
     : null
 
+  const hoveringLineLayer = hoveringLine.value
+    ? new LineLayer({
+      id: `selected${selectedLine.value?.id}`,
+      data: hoveringLine.value,
+      stationVisible: false,
+      selected: true,
+    })
+    : null
+
   const nextLines = dataset.value.filter(isCitySelected).map(city => city.lines.map(line => new LineLayer({
     id: line.id,
     data: line,
@@ -44,7 +53,7 @@ watchEffect(() => {
     },
   })))
   deckgl.value?.setProps({
-    layers: [nextLines, selectedLineLayer],
+    layers: [nextLines, selectedLineLayer, hoveringLineLayer],
   })
 })
 

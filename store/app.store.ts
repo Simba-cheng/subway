@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import type { City, Line } from '~/types'
 
 export const useAppStore = defineStore('app', () => {
@@ -7,6 +7,7 @@ export const useAppStore = defineStore('app', () => {
   const selectedCities = ref<WeakMap<City, boolean>>(new WeakMap())
   const selectedLine = ref<Line | null>(null)
   const detailCity = ref<City | null>(null)
+  const hoveringLine = ref<Line | null>(null)
 
   const selectCity = (city: City) => {
     selectedCities.value.set(city, true)
@@ -25,12 +26,14 @@ export const useAppStore = defineStore('app', () => {
   const selectLine = (line: Line | null) => selectedLine.value = line
   const setDetailCity = (city: City | null) =>
     detailCity.value = city
+  const setHoveringLine = (line: Line | null) => hoveringLine.value = line
 
   return {
     dataset,
     selectedCities,
     detailCity,
     selectedLine,
+    hoveringLine,
 
     selectCity,
     deselectCity,
@@ -38,5 +41,9 @@ export const useAppStore = defineStore('app', () => {
     toggleCity,
     selectLine,
     setDetailCity,
+    setHoveringLine,
   }
 })
+
+if (import.meta.hot)
+  import.meta.hot.accept(acceptHMRUpdate(useAppStore, import.meta.hot))
