@@ -26,7 +26,11 @@ export const useAppStore = defineStore('app', () => {
   const selectLine = (line: Line | null) => selectedLine.value = line
   const setDetailCity = (city: City | null) =>
     detailCity.value = city
-  const setHoveringLine = (line: Line | null) => hoveringLine.value = line
+  const setHoveringLine = (line: Line | null) => {
+    if (selectedLine.value)
+      return
+    hoveringLine.value = line
+  }
 
   return {
     dataset,

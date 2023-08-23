@@ -20,7 +20,7 @@ const { dataset, selectedLine, hoveringLine } = storeToRefs(store)
 const { selectLine, isCitySelected } = store
 const zoom = ref<number>(0)
 
-watchEffect(() => {
+watchEffect(async () => {
   const selectedLineLayer = selectedLine.value
     ? new LineLayer({
       id: `selected${selectedLine.value?.id}`,
@@ -52,8 +52,11 @@ watchEffect(() => {
       zoomToLine(line)
     },
   })))
-  deckgl.value?.setProps({
-    layers: [nextLines, selectedLineLayer],
+
+  requestAnimationFrame(() => {
+    deckgl.value?.setProps({
+      layers: [nextLines, selectedLineLayer, hoveringLineLayer],
+    })
   })
 })
 
