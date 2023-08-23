@@ -3,7 +3,7 @@
 import { MapboxMap } from '@studiometa/vue-mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import type { MapboxOverlay } from '@deck.gl/mapbox/typed'
-import { LocateFixed } from 'lucide-vue-next'
+import { LocateFixed, MenuSquare } from 'lucide-vue-next'
 import LineLayer from '~/layers/lines.layer'
 import type { City, Line } from '~/types'
 
@@ -15,6 +15,7 @@ const deckgl = ref<MapboxOverlay | null>(null)
 const dataset = useDataset()
 
 const selectedCities = ref<WeakMap<City, boolean>>(new WeakMap())
+const detailCity = ref<City | null>(null)
 const zoom = ref<number>(0)
 
 const selectedLine = ref<Line | null>(null)
@@ -94,14 +95,14 @@ const isControlPressing = useKeyModifier('Meta')
           }" @click="(e) => {
             if (selectedCities.has(city)) {
               selectedCities.delete(city)
+              if (detailCity === city){ detailCity = null }
               if (selectedLine?.cityId === city.id){
                 selectedLine = null
               }
             }
             else {
-              if (e.metaKey) {
-                zoomToCity(city)
-              }
+              zoomToCity(city)
+              detailCity = city;
               selectedCities.set(city, true)
             }
           }"
@@ -110,6 +111,13 @@ const isControlPressing = useKeyModifier('Meta')
             {{ city.name }}
           </span>
           <span class="ml-auto flex items-center space-x-2 opacity-0" :class="selectedCities.has(city) && 'opacity-100'">
+            <span
+              class="hover:bg-slate-100 rounded-md p-0.5 cursor-pointer" @click.stop="() => {
+                detailCity = city
+              }"
+            >
+              <MenuSquare :size="11" />
+            </span>
             <span
               class="hover:bg-slate-100 rounded-md p-0.5 cursor-pointer" @click.stop="() => {
                 selectedLine = null
@@ -124,10 +132,13 @@ const isControlPressing = useKeyModifier('Meta')
     </div>
 
     <CityDetail
-      :city="dataset[0]" @line-select="(line: Line) => {
+      v-if="!!detailCity"
+      :city="detailCity"
+      @line-select="(line: Line) => {
         selectedLine = line;
         zoomToLine(line)
       }"
+      @close="() => detailCity = null"
     />
     <div v-if="!!selectedLine" class="fixed right-4 top-4 backdrop-blur-lg bg-white py-4 pb-0 rounded-lg min-w-[70px]">
       <h3 class="text-center text-sm text-zinc-700">
