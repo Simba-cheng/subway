@@ -17,7 +17,7 @@ const deckgl = ref<MapboxOverlay | null>(null)
 
 const store = useAppStore()
 const { dataset, selectedLine, hoveringLine } = storeToRefs(store)
-const { selectLine, isCitySelected } = store
+const { selectLine, isCitySelected, setDetailCity } = store
 const zoom = ref<number>(0)
 
 watchEffect(async () => {
@@ -96,12 +96,14 @@ function zoomToLine(line: Line) {
   <section class="relative z-[2]">
     <CitySelect
       @on-zoom="zoomToCity"
+      @city-select="zoomToCity"
     />
 
     <CityDetail
       @line-select="(line: Line) => {
         zoomToLine(line)
       }"
+      @close="() => setDetailCity(null)"
     />
     <LineDetail
       @station-click="(station:Station) => {
