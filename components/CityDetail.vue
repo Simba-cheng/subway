@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { XCircle } from 'lucide-vue-next'
+import { X } from 'lucide-vue-next'
 import { useAppStore } from '~/store/app.store'
 import type { Line } from '~/types'
 
@@ -18,7 +18,7 @@ const { setHoveringLine, selectLine } = store
   <div v-if="detailCity" class="fixed left-28 top-4 bg-white text-xs p-2 rounded-lg">
     <h3 class="flex items-center">
       <span>{{ detailCity.name }}</span>
-      <XCircle class="ml-auto cursor-pointer" :size="12" @click="() => emits('close')" />
+      <X class="ml-auto cursor-pointer hover:scale-110" :size="12" @click="() => emits('close')" />
     </h3>
     <ul class="text-zinc-600 space-y-1 mt-2">
       <li
