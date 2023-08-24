@@ -15,7 +15,7 @@ const { setHoveringLine, selectLine } = store
 </script>
 
 <template>
-  <div v-if="detailCity" class="fixed left-36 top-4 bg-white text-xs p-2 rounded-lg">
+  <div v-if="detailCity" class="fixed left-28 top-4 bg-white text-xs p-2 rounded-lg">
     <h3 class="flex items-center">
       <span>{{ detailCity.name }}</span>
       <XCircle class="ml-auto cursor-pointer" :size="12" @click="() => emits('close')" />

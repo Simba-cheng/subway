@@ -4,13 +4,13 @@ import type { City, Line } from '~/types'
 export const useAppStore = defineStore('app', () => {
   const dataset = useDataset()
 
-  const selectedCities = ref<WeakMap<City, boolean>>(new WeakMap())
+  const selectedCities = ref<Set<City>>(new Set())
   const selectedLine = ref<Line | null>(null)
   const detailCity = ref<City | null>(null)
   const hoveringLine = ref<Line | null>(null)
 
   const selectCity = (city: City) => {
-    selectedCities.value.set(city, true)
+    selectedCities.value.add(city)
   }
   const deselectCity = (city: City) => {
     selectedCities.value.delete(city)
