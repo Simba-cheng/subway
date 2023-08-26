@@ -21,6 +21,7 @@ class LineLayer extends CompositeLayer<{ id: string; data: Line; selected?: bool
         widthScale: 15,
         widthMinPixels: selected ? 5 : 2,
         widthMaxPixels: selected ? 7 : 3,
+        pickable: true,
 
         getPath: () => line.polyline,
       }),

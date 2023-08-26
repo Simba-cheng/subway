@@ -15,7 +15,7 @@ export function useDataset() {
           bound: getLineBounds(stations),
           color: hexRgb(line.color, { format: 'array', alpha: 255 }),
           stations,
-          polyline: partialPolyline((line.fullPolyline.length ? line.fullPolyline.map(p => transformGCJ02(p as [number, number])) : extractPolyline(line.polyline)) as [number, number][], 1),
+          polyline: partialPolyline((line.fullPolyline.length ? line.fullPolyline.map(p => transformGCJ02(p as [number, number])) : extractPolyline(line.polyline)) as [number, number][], 3),
         }
       })
 

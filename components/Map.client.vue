@@ -16,14 +16,14 @@ const mapCenter = ref([113.863048, 22.575149])
 const deckgl = ref<MapboxOverlay | null>(null)
 
 const store = useAppStore()
-const { dataset, selectedLine, hoveringLine } = storeToRefs(store)
+const { dataset, selectedLine, hoveringLine, selectedCities } = storeToRefs(store)
 const { selectLine, isCitySelected, setDetailCity } = store
 const zoom = ref<number>(0)
 
 watchEffect(async () => {
   const selectedLineLayer = selectedLine.value
     ? new LineLayer({
-      id: `selected${selectedLine.value?.id}`,
+      id: 'selectedline',
       data: selectedLine.value,
       stationVisible: true,
       selected: true,
@@ -35,18 +35,19 @@ watchEffect(async () => {
 
   const hoveringLineLayer = hoveringLine.value
     ? new LineLayer({
-      id: `hovering${selectedLine.value?.id}`,
+      id: 'hoveringline',
       data: hoveringLine.value,
       stationVisible: false,
       selected: true,
     })
     : null
 
-  const nextLines = dataset.value.filter(isCitySelected).map(city => city.lines.map(line => new LineLayer({
+  const nextLayers = dataset.value.filter(city => selectedCities.value.has(city)).map(city => city.lines.map(line => new LineLayer({
     id: line.id,
     data: line,
-    visible: !selectedLineLayer,
+    visible: !selectedLine.value,
     stationVisible: zoom.value >= 10,
+    pickable: true,
     onClick() {
       selectLine(line)
       zoomToLine(line)
@@ -55,14 +56,26 @@ watchEffect(async () => {
 
   requestAnimationFrame(() => {
     deckgl.value?.setProps({
-      layers: [nextLines, selectedLineLayer, hoveringLineLayer],
+      layers: [nextLayers, selectedLineLayer, hoveringLineLayer],
     })
   })
 })
 
+const hoverPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 })
+
 async function onMapCreated(mapInstance: any) {
   const DeckOverlay = await import('@deck.gl/mapbox/typed').then(module => module.MapboxOverlay)
-  deckgl.value = new DeckOverlay({ debug: true })
+  deckgl.value = new DeckOverlay({
+    debug: true,
+    pickingRadius: 4,
+    onHover: (info) => {
+      const source = info.sourceLayer?.root.props.data as Line
+
+      useAppStore().setHoveringLine(source || null)
+      // info.x > 0 && (hoverPosition.value = { x: info.x, y: info.y })
+      hoverPosition.value = { x: info.x, y: info.y }
+    },
+  })
   mapInstance.addControl(deckgl.value)
 
   map.value = mapInstance
@@ -115,4 +128,7 @@ function zoomToLine(line: Line) {
       }"
     />
   </section>
+  <div v-if="hoveringLine && hoverPosition.x > 0" class="fixed left-0 top-0 will-change-transform z-10 text-xs bg-white/90 p-1 rounded-lg" :style="{ transform: `translate(${hoverPosition.x + 10}px, ${hoverPosition.y + 10}px)` }">
+    {{ hoveringLine.name }}
+  </div>
 </template>
