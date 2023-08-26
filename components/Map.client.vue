@@ -27,6 +27,7 @@ watchEffect(async () => {
       data: selectedLine.value,
       stationVisible: true,
       selected: true,
+      pickable: true,
       onClick: () => {
         selectLine(null)
       },
@@ -39,6 +40,11 @@ watchEffect(async () => {
       data: hoveringLine.value,
       stationVisible: false,
       selected: true,
+      pickable: true,
+      onClick() {
+        selectLine(hoveringLine.value!)
+        zoomToLine(hoveringLine.value!)
+      },
     })
     : null
 
@@ -48,10 +54,7 @@ watchEffect(async () => {
     visible: !selectedLine.value,
     stationVisible: zoom.value >= 10,
     pickable: true,
-    onClick() {
-      selectLine(line)
-      zoomToLine(line)
-    },
+
   })))
 
   requestAnimationFrame(() => {
@@ -74,6 +77,9 @@ async function onMapCreated(mapInstance: any) {
       useAppStore().setHoveringLine(source || null)
       // info.x > 0 && (hoverPosition.value = { x: info.x, y: info.y })
       hoverPosition.value = { x: info.x, y: info.y }
+    },
+    onDragStart: () => {
+      hoveringLine.value = null
     },
   })
   mapInstance.addControl(deckgl.value)
