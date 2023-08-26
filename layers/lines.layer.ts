@@ -17,7 +17,6 @@ class LineLayer extends CompositeLayer<{ id: string; data: Line; selected?: bool
         id: `${id}${line.id}polyline${selected && 'selected'}`,
         data: line.polyline,
         getColor: line.color,
-        pickable: true,
         autoHighlight: false,
         widthScale: 15,
         widthMinPixels: selected ? 5 : 2,
@@ -32,7 +31,6 @@ class LineLayer extends CompositeLayer<{ id: string; data: Line; selected?: bool
         opacity: 0.8,
         stroked: true,
         filled: true,
-        pickable: false,
 
         // TODO 换乘站点特殊样式
         radiusScale: 12,
@@ -46,7 +44,6 @@ class LineLayer extends CompositeLayer<{ id: string; data: Line; selected?: bool
         id: `${id}${line.id}text${selected && 'selected'}`,
         data: line.stations,
         visible: selected && stationVisible,
-        pickable: true,
         getSize: 12,
         getAngle: 0,
         getTextAnchor: 'middle',

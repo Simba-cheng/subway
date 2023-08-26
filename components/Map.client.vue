@@ -62,7 +62,7 @@ watchEffect(async () => {
 
 async function onMapCreated(mapInstance: any) {
   const DeckOverlay = await import('@deck.gl/mapbox/typed').then(module => module.MapboxOverlay)
-  deckgl.value = new DeckOverlay({ getCursor: () => selectedLine ? 'pointer' : 'default' })
+  deckgl.value = new DeckOverlay({ debug: true })
   mapInstance.addControl(deckgl.value)
 
   map.value = mapInstance
@@ -73,7 +73,7 @@ function onZoomend() {
 }
 
 function zoomToCity(city: City) {
-  map.value.fitBounds(city.bound, { padding: 25 })
+  map.value.fitBounds(city.bound, { padding: 25, duration: 800 })
 }
 
 function zoomToLine(line: Line) {
@@ -91,7 +91,7 @@ function zoomToLine(line: Line) {
 <template>
   <MapboxMap
     class="w-screen h-screen" :access-token="config.MAP_BOX_TOKEN"
-    map-style="mapbox://styles/mapbox/light-v10" :center="mapCenter" :zoom="8" @mb-created="onMapCreated" @mb-zoomend="onZoomend"
+    map-style="mapbox://styles/mapbox/light-v10?optimize=true" :center="mapCenter" :zoom="8" @mb-created="onMapCreated" @mb-zoomend="onZoomend"
   />
   <section class="relative z-[2]">
     <CitySelect

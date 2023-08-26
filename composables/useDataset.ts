@@ -15,7 +15,7 @@ export function useDataset() {
           bound: getLineBounds(stations),
           color: hexRgb(line.color, { format: 'array', alpha: 255 }),
           stations,
-          polyline: (line.fullPolyline.length ? line.fullPolyline : extractPolyline(line.polyline)) as [number, number][],
+          polyline: partialPolyline((line.fullPolyline.length ? line.fullPolyline : extractPolyline(line.polyline)) as [number, number][], 3),
         }
       })
 
@@ -72,4 +72,14 @@ function getCityBound(lines: Line[]) {
   }
 
   return [[minLng, minLat], [maxLng, maxLat]] as Bound
+}
+
+function partialPolyline(polyline: [number, number][], step: number) {
+  const newPolyline = [polyline[0]]
+
+  polyline.slice(1).forEach((p, idx) => {
+    idx % step === 0 && newPolyline.push(p)
+  })
+
+  return newPolyline
 }
