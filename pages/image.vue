@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { geoCentroid, geoMercator, geoPath } from 'd3-geo'
+import { geoBounds, geoMercator, geoPath } from 'd3-geo'
 import { useAppStore } from '~/store/app.store'
-import type { Bound, City } from '~/types'
+import type { City } from '~/types'
 
 const { dataset } = useAppStore()
 const selectedCity = ref<City | null>(null)
@@ -9,46 +9,28 @@ const selectedCity = ref<City | null>(null)
 const bounds = computed(() => {
   if (!selectedCity.value)
     return null
-  let minLng = Infinity
-  let minLat = Infinity
-  let maxLng = -Infinity
-  let maxLat = -Infinity
 
-  for (const line of selectedCity.value?.lines) {
-    for (const [lng, lat] of line.polyline) {
-      if (lng < minLng)
-        minLng = lng
-      if (lng > maxLng)
-        maxLng = lng
-      if (lat < minLat)
-        minLat = lat
-      if (lat > maxLat)
-        maxLat = lat
-    }
-  }
-
-  return [[minLng, minLat], [maxLng, maxLat]] as Bound
+  return geoBounds({ type: 'LineString', coordinates: selectedCity.value.lines.map(l => l.polyline).flat() })
 })
 
 const size = computed(() => {
   if (!bounds.value)
     return
   const baseWidth = window.innerWidth
-  const ratio = (bounds.value[1][1] - bounds.value[0][1]) / (bounds.value[1][0] - bounds.value[0][0])
+  const boundsWidth = bounds.value[1][0] - bounds.value[0][0]
+  const boundsHeight = bounds.value[1][1] - bounds.value[0][1]
+  const scaleFactor = baseWidth / boundsWidth
+
   return {
-    width: baseWidth,
-    height: baseWidth * ratio,
+    width: boundsWidth * scaleFactor,
+    height: boundsHeight * scaleFactor,
   }
 })
 
 const pathGenerator = computed(() => {
   if (!selectedCity.value?.lines || !size.value)
     return
-  const projection
-  = geoMercator()
-    .center(geoCentroid({ type: 'LineString', coordinates: selectedCity.value.lines.map(l => l.polyline).flat() })) // 地图中心点
-    .scale(100000) // 缩放比例
-    .translate([size.value.width / 2, size.value.height / 2]) // 平移
+  const projection = geoMercator().fitSize([size.value.width, size.value.height], { type: 'LineString', coordinates: selectedCity.value.lines.map(l => l.polyline).flat() })
 
   // 创建 path 生成器
   return geoPath().projection(projection)
