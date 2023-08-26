@@ -30,7 +30,7 @@ const size = computed(() => {
 const pathGenerator = computed(() => {
   if (!selectedCity.value?.lines || !size.value)
     return
-  const projection = geoMercator().fitSize([size.value.width, size.value.height], { type: 'LineString', coordinates: selectedCity.value.lines.map(l => l.polyline).flat() })
+  const projection = geoMercator().fitSize([size.value.width - 50, size.value.height - 50], { type: 'LineString', coordinates: selectedCity.value.lines.map(l => l.polyline).flat() })
 
   // 创建 path 生成器
   return geoPath().projection(projection)
