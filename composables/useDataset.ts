@@ -15,7 +15,7 @@ export function useDataset() {
           bound: getLineBounds(stations),
           color: hexRgb(line.color, { format: 'array', alpha: 255 }),
           stations,
-          polyline: partialPolyline((line.fullPolyline.length ? line.fullPolyline : extractPolyline(line.polyline)) as [number, number][], 3),
+          polyline: partialPolyline((line.fullPolyline.length ? line.fullPolyline.map(p => transformGCJ02(p as [number, number])) : extractPolyline(line.polyline)) as [number, number][], 1),
         }
       })
 
@@ -77,9 +77,9 @@ function getCityBound(lines: Line[]) {
 function partialPolyline(polyline: [number, number][], step: number) {
   const newPolyline = [polyline[0]]
 
-  polyline.slice(1).forEach((p, idx) => {
+  polyline.slice(1, polyline.length - 1).forEach((p, idx) => {
     idx % step === 0 && newPolyline.push(p)
   })
 
-  return newPolyline
+  return [...newPolyline, polyline[polyline.length - 1]]
 }
