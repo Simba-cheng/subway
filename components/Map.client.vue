@@ -41,8 +41,11 @@ watchEffect(async () => {
       data: hoveringLine.value,
       pickable: true,
       onClick() {
-        selectLine(hoveringLine.value!)
-        zoomToLine(hoveringLine.value!)
+        const line = hoveringLine.value
+        if (!line)
+          return
+        selectLine(line)
+        zoomToLine(line)
       },
     })
     : null
