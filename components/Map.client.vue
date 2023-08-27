@@ -18,8 +18,8 @@ const mapCenter = ref([113.863048, 22.575149])
 const deckgl = ref<MapboxOverlay | null>(null)
 
 const store = useAppStore()
-const { dataset, selectedLine, hoveringLine, selectedCities } = storeToRefs(store)
-const { selectLine, setDetailCity, setHoveringStation } = store
+const { dataset, selectedLine, hoveringLine, hoveringStation, selectedCities } = storeToRefs(store)
+const { selectLine, setDetailCity } = store
 const zoom = ref<number>(0)
 
 watchEffect(async () => {
@@ -72,9 +72,13 @@ async function onMapCreated(mapInstance: any) {
     pickingRadius: 4,
     onHover: (info) => {
       const source = info.sourceLayer?.root.props.data as Line
-
+      const isHoveringOnStation = info.sourceLayer?.id === 'detail-stations'
       useAppStore().setHoveringLine(source || null)
-      // info.x > 0 && (hoverPosition.value = { x: info.x, y: info.y })
+      if (isHoveringOnStation)
+        useAppStore().setHoveringStation(source.stations.find(station => station.id === info.object?.id) || null, source)
+      else
+        useAppStore().setHoveringStation(null, null)
+
       hoverPosition.value = { x: info.x, y: info.y }
     },
     onDragStart: () => {
@@ -134,6 +138,8 @@ function zoomToLine(line: Line) {
     />
   </section>
   <div v-if="hoveringLine && hoverPosition.x > 0" class="fixed left-0 top-0 will-change-transform z-10 text-xs bg-white/90 p-1 rounded-lg" :style="{ transform: `translate(${hoverPosition.x + 10}px, ${hoverPosition.y + 10}px)` }">
-    {{ hoveringLine.name }}
+    {{ hoveringLine.name }} <span class="font-semibold">
+      {{ hoveringStation ? `/ ${hoveringStation.name}` : '' }}
+    </span>
   </div>
 </template>

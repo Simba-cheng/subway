@@ -19,7 +19,7 @@ class LineDetailLayer extends CompositeLayer<{ id: string; data: Line }> {
         widthScale: 15,
         widthMinPixels: 5,
         widthMaxPixels: 7,
-        pickable: true,
+        pickable: false,
         getPath: () => line.polyline,
       }),
       new StationsLayer({ id: 'detail-stations', data: line, size: 'lg' }),

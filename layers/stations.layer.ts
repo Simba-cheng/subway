@@ -19,6 +19,7 @@ class StationsLayer extends CompositeLayer<{ id: string; data: Line; selected?: 
         stroked: true,
         filled: true,
         radiusScale: 12,
+        pickable: true,
         radiusMinPixels: size === 'sm' ? 2 : 3,
         radiusMaxPixels: size === 'sm' ? 2 : 4,
         lineWidthMinPixels: 1,

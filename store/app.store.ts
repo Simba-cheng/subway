@@ -36,8 +36,8 @@ export const useAppStore = defineStore('app', () => {
     if (selectedLine.value)
       return
 
-    hoveringLine.value = line
     hoveringStation.value = station
+    station && (hoveringLine.value = line)
   }
 
   return {
@@ -46,6 +46,7 @@ export const useAppStore = defineStore('app', () => {
     detailCity,
     selectedLine,
     hoveringLine,
+    hoveringStation,
 
     selectCity,
     deselectCity,
