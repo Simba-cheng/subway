@@ -4,9 +4,8 @@ import { PathLayer } from '@deck.gl/layers/typed'
 import StationsLayer from './stations.layer'
 import type { Line } from '~/types'
 
-class LineDetailLayer extends CompositeLayer<{ id: string; data: Line }> {
+class LineDetailLayer extends CompositeLayer<{ id: string; data: Line; pickable?: boolean }> {
   renderLayers() {
-    const id = this.props.id
     const line = this.props.data
 
     if (!line)
@@ -19,10 +18,10 @@ class LineDetailLayer extends CompositeLayer<{ id: string; data: Line }> {
         widthScale: 15,
         widthMinPixels: 5,
         widthMaxPixels: 7,
-        pickable: false,
+        pickable: this.props.pickable,
         getPath: () => line.polyline,
       }),
-      new StationsLayer({ id: 'detail-stations', data: line, size: 'lg' }),
+      new StationsLayer({ id: 'detail-stations', data: line, size: 'lg', labels: true }),
     ]
   }
 }

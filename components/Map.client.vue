@@ -24,13 +24,11 @@ const zoom = ref<number>(0)
 
 watchEffect(async () => {
   const selectedLineLayer = selectedLine.value
-    ? new LineLayer({
-      id: 'selectedline',
+    ? new LineDetailLayer({
+      id: 'hoveringline',
       data: selectedLine.value,
-      stationVisible: true,
-      selected: true,
       pickable: true,
-      onClick: () => {
+      onClick() {
         selectLine(null)
       },
     })
@@ -54,7 +52,7 @@ watchEffect(async () => {
     id: line.id,
     data: line,
     visible: !selectedLine.value,
-  }), new StationsLayer({ id: `${line.id}-stations`, data: line, visible: zoom.value >= 10 })]))
+  }), new StationsLayer({ id: `${line.id}-stations`, data: line, visible: !selectedLine.value && zoom.value >= 10 })]))
 
   requestAnimationFrame(() => {
     deckgl.value?.setProps({
