@@ -60,9 +60,6 @@ const isOpen = ref(true)
             }"
           >
             {{ city.name }}
-            <!-- <span class="ml-auto">
-              <PlusSquare class="hidden group-hover:block" :size="11" />
-            </span> -->
           </li>
         </ul>
       </section>

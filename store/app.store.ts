@@ -5,6 +5,7 @@ export const useAppStore = defineStore('app', () => {
   const dataset = useDataset()
 
   const selectedCities = ref<Set<City>>(new Set())
+
   const selectedLine = ref<Line | null>(null)
   const detailCity = ref<City | null>(null)
   const hoveringLine = ref<Line | null>(null)

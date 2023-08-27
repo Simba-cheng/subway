@@ -30,7 +30,6 @@ const { setHoveringLine, selectLine } = store
         <div class="hover:bg-zinc-50 rounded px-2 py-1 flex items-center cursor-pointer">
           <div class="h-1 w-1 rounded-full mr-1" :style="{ background: `rgb(${line.color.slice(0, 3)})` }" />
           {{ line.name }}
-          <!-- <div class="w-2 h-1 absolute left-0 bottom-0 opacity-25" :style="{ background: `rgb(${line.color.slice(0, 3)})` }" /> -->
         </div>
       </li>
     </ul>

@@ -114,7 +114,7 @@ function zoomToLine(line: Line) {
 
 <template>
   <MapboxMap
-    class="w-screen h-screen" :access-token="config.MAP_BOX_TOKEN"
+    class="w-screen h-screen" :access-token="config.public['MAP_BOX_TOKEN']"
     map-style="mapbox://styles/mapbox/light-v10?optimize=true" :center="mapCenter" :zoom="8" @mb-created="onMapCreated" @mb-zoomend="onZoomend"
   />
   <section class="relative z-[2]">
