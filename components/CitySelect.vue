@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { ChevronUp, List, PlusSquare, X } from 'lucide-vue-next'
+import { ChevronUp, List, X } from 'lucide-vue-next'
 import { useAppStore } from '~/store/app.store'
 import type { City } from '~/types'
 
@@ -60,9 +60,9 @@ const isOpen = ref(true)
             }"
           >
             {{ city.name }}
-            <span class="ml-auto">
+            <!-- <span class="ml-auto">
               <PlusSquare class="hidden group-hover:block" :size="11" />
-            </span>
+            </span> -->
           </li>
         </ul>
       </section>

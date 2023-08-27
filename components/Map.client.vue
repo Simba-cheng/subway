@@ -134,7 +134,7 @@ function zoomToLine(line: Line) {
         map.flyTo({
           center: station.coord,
           essential: true,
-          zoom: 12,
+          zoom: 15,
         })
       }"
     />

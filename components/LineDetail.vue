@@ -13,7 +13,7 @@ const { selectedLine } = storeToRefs(store)
 
 <template>
   <div v-if="!!selectedLine" class="fixed right-4 top-4 backdrop-blur-lg bg-white py-4 pb-0 rounded-lg min-w-[70px]">
-    <h3 class="text-center text-sm text-zinc-700">
+    <h3 class="text-center text-xs text-zinc-700">
       {{ selectedLine.name }}
     </h3>
     <div class="max-h-[80vh] overflow-y-scroll scrollbar-none">
