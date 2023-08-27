@@ -28,6 +28,7 @@ watchEffect(async () => {
       id: 'hoveringline',
       data: selectedLine.value,
       pickable: true,
+      labels: true,
       onClick() {
         selectLine(null)
       },

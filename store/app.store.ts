@@ -28,7 +28,11 @@ export const useAppStore = defineStore('app', () => {
   const isCitySelected = (city: City) => selectedCities.value.has(city)
   const toggleCity = (city: City) => isCitySelected(city) ? deselectCity(city) : selectCity(city)
 
-  const selectLine = (line: Line | null) => selectedLine.value = line
+  const selectLine = (line: Line | null) => {
+    selectedLine.value = line
+    hoveringLine.value = null
+    hoveringStation.value = null
+  }
   const setDetailCity = (city: City | null) =>
     detailCity.value = city
   const setHoveringLine = (line: Line | null) => {
