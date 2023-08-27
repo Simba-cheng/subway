@@ -10,6 +10,7 @@ import LineLayer from '~/layers/lines.layer'
 import type { City, Line, Station } from '~/types'
 import { useAppStore } from '~/store/app.store'
 import StationsLayer from '~/layers/stations.layer'
+import LineDetailLayer from '~/layers/line-detail.layer'
 
 const config = useRuntimeConfig()
 const map = ref()
@@ -36,11 +37,9 @@ watchEffect(async () => {
     : null
 
   const hoveringLineLayer = hoveringLine.value
-    ? new LineLayer({
+    ? new LineDetailLayer({
       id: 'hoveringline',
       data: hoveringLine.value,
-      stationVisible: false,
-      selected: true,
       pickable: true,
       onClick() {
         selectLine(hoveringLine.value!)

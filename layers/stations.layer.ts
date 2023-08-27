@@ -3,25 +3,24 @@ import { CompositeLayer } from '@deck.gl/core/typed'
 import { ScatterplotLayer } from '@deck.gl/layers/typed'
 import type { Line, Station } from '~/types'
 
-class StationsLayer extends CompositeLayer<{ id: string; data: Line; selected?: boolean; stationVisible?: boolean }> {
+class StationsLayer extends CompositeLayer<{ id: string; data: Line; selected?: boolean; size?: 'sm' | 'lg' }> {
   renderLayers() {
     const line = this.props.data
-    const stationVisible = this.props.stationVisible ?? true
+    const size = this.props.size || 'sm'
 
     if (!line)
       return []
     return [
       new ScatterplotLayer<Station>({
-        id: `${line.id}-stations-layer`,
+        id: `${this.props.id || ''}stations`,
         data: line.stations,
-        visible: stationVisible,
+
         opacity: 0.8,
         stroked: true,
         filled: true,
-
         radiusScale: 12,
-        radiusMinPixels: 2,
-        radiusMaxPixels: 2,
+        radiusMinPixels: size === 'sm' ? 2 : 3,
+        radiusMaxPixels: size === 'sm' ? 2 : 4,
         lineWidthMinPixels: 1,
         getFillColor: line.color,
         getPosition: data => data.coord,
