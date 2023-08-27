@@ -12,6 +12,10 @@ export const useAppStore = defineStore('app', () => {
 
   const selectCity = (city: City) => {
     selectedCities.value.add(city)
+
+    hoveringLine.value = null
+    hoveringStation.value = null
+    selectedLine.value = null
   }
   const deselectCity = (city: City) => {
     selectedCities.value.delete(city)
