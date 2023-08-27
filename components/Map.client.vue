@@ -9,6 +9,7 @@ import LineLayer from '~/layers/lines.layer'
 // eslint-disable-next-line unused-imports/no-unused-imports
 import type { City, Line, Station } from '~/types'
 import { useAppStore } from '~/store/app.store'
+import StationsLayer from '~/layers/stations.layer'
 
 const config = useRuntimeConfig()
 const map = ref()
@@ -17,7 +18,7 @@ const deckgl = ref<MapboxOverlay | null>(null)
 
 const store = useAppStore()
 const { dataset, selectedLine, hoveringLine, selectedCities } = storeToRefs(store)
-const { selectLine, isCitySelected, setDetailCity } = store
+const { selectLine, setDetailCity, setHoveringStation } = store
 const zoom = ref<number>(0)
 
 watchEffect(async () => {
@@ -48,18 +49,17 @@ watchEffect(async () => {
     })
     : null
 
-  const nextLayers = dataset.value.filter(city => selectedCities.value.has(city)).map(city => city.lines.map(line => new LineLayer({
+  const cities = dataset.value.filter(city => selectedCities.value.has(city))
+
+  const lineLayers = cities.map(city => city.lines.map(line => [new LineLayer({
     id: line.id,
     data: line,
     visible: !selectedLine.value,
-    stationVisible: zoom.value >= 10,
-    pickable: true,
-
-  })))
+  }), new StationsLayer({ id: `${line.id}-stations`, data: line, visible: zoom.value >= 10 })]))
 
   requestAnimationFrame(() => {
     deckgl.value?.setProps({
-      layers: [nextLayers, selectedLineLayer, hoveringLineLayer],
+      layers: [lineLayers, selectedLineLayer, hoveringLineLayer],
     })
   })
 })

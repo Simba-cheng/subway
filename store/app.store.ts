@@ -1,5 +1,5 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import type { City, Line } from '~/types'
+import type { City, Line, Station } from '~/types'
 
 export const useAppStore = defineStore('app', () => {
   const dataset = useDataset()
@@ -8,6 +8,7 @@ export const useAppStore = defineStore('app', () => {
   const selectedLine = ref<Line | null>(null)
   const detailCity = ref<City | null>(null)
   const hoveringLine = ref<Line | null>(null)
+  const hoveringStation = ref<Station | null>(null)
 
   const selectCity = (city: City) => {
     selectedCities.value.add(city)
@@ -31,6 +32,13 @@ export const useAppStore = defineStore('app', () => {
       return
     hoveringLine.value = line
   }
+  const setHoveringStation = (station: Station | null, line: Line | null) => {
+    if (selectedLine.value)
+      return
+
+    hoveringLine.value = line
+    hoveringStation.value = station
+  }
 
   return {
     dataset,
@@ -46,6 +54,7 @@ export const useAppStore = defineStore('app', () => {
     selectLine,
     setDetailCity,
     setHoveringLine,
+    setHoveringStation,
   }
 })
 

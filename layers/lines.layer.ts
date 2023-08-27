@@ -1,7 +1,7 @@
 import { CompositeLayer } from '@deck.gl/core/typed'
 
-import { PathLayer, ScatterplotLayer, TextLayer } from '@deck.gl/layers/typed'
-import type { Line, Station } from '~/types'
+import { PathLayer } from '@deck.gl/layers/typed'
+import type { Line } from '~/types'
 
 class LineLayer extends CompositeLayer<{ id: string; data: Line; selected?: boolean; stationVisible?: boolean }> {
   renderLayers() {
@@ -24,36 +24,6 @@ class LineLayer extends CompositeLayer<{ id: string; data: Line; selected?: bool
         pickable: true,
 
         getPath: () => line.polyline,
-      }),
-      new ScatterplotLayer<Station>({
-        id: `${id}${line.id}stations${selected && 'selected'}`,
-        data: line.stations,
-        visible: stationVisible,
-        opacity: 0.8,
-        stroked: true,
-        filled: true,
-
-        // TODO 换乘站点特殊样式
-        radiusScale: 12,
-        radiusMinPixels: 2,
-        radiusMaxPixels: 2,
-        lineWidthMinPixels: 1,
-        getFillColor: line.color,
-        getPosition: data => data.coord,
-      }),
-      new TextLayer<Station>({
-        id: `${id}${line.id}text${selected && 'selected'}`,
-        data: line.stations,
-        visible: selected && stationVisible,
-        getSize: 12,
-        getAngle: 0,
-        getTextAnchor: 'middle',
-        getAlignmentBaseline: 'center',
-        characterSet: 'auto',
-        getPosition: d => d.coord,
-        getText: d => d.name,
-        getPixelOffset: [10, -15],
-        // getColor: [255, 255, 255],
       }),
     ]
   }
