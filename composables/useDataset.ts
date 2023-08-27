@@ -16,7 +16,7 @@ export function useDataset() {
           name: line.name,
           bound: getLineBounds(stations),
           color: hexRgb(line.color, { format: 'array', alpha: 255 }),
-          stations,
+          stations: correctStations(polyline, stations),
           polyline,
         }
       })
@@ -120,6 +120,41 @@ function correctPolyline(polyline: [number, number][], stations: Station[]): [nu
   }
 
   return polyline
+}
+
+function correctStations(polyline: [number, number][], stations: Station[]): Station[] {
+  if (stations.length === 0 || polyline.length === 0)
+    return stations
+
+  const firstStationCoord = stations[0].coord
+  const lastStationCoord = stations[stations.length - 1].coord
+  const polylineStart = polyline[0]
+  const polylineEnd = polyline[polyline.length - 1]
+
+  if (!firstStationCoord || !lastStationCoord || !polylineStart || !polylineEnd)
+    return stations
+
+  const distancePolylineStartFirstStation = getDistance(polyline[0], firstStationCoord)
+  const distancePolylineEndLastStation = getDistance(polyline[polyline.length - 1], lastStationCoord)
+
+  const distancePolylineStartLastStation = getDistance(polyline[0], lastStationCoord)
+  const distancePolylineEndFirstStation = getDistance(polyline[polyline.length - 1], firstStationCoord)
+
+  const correctedStations = [...stations]
+
+  if (distancePolylineStartFirstStation + distancePolylineEndLastStation < distancePolylineStartLastStation + distancePolylineEndFirstStation) {
+    // polyline 和 stations 的方向一致
+    correctedStations[0].coord = polylineStart
+    correctedStations[correctedStations.length - 1].coord = polylineEnd
+  }
+  else {
+    // polyline 和 stations 的方向不一致
+    correctedStations.reverse()
+    correctedStations[0].coord = polylineEnd
+    correctedStations[correctedStations.length - 1].coord = polylineStart
+  }
+
+  return correctedStations
 }
 
 function getDistance(coord1: [number, number], coord2: [number, number]): number {
