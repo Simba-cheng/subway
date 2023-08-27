@@ -47,6 +47,11 @@ export const useAppStore = defineStore('app', () => {
     hoveringStation.value = station
     station && (hoveringLine.value = line)
   }
+  const resetSelection = () => {
+    selectedLine.value = null
+    hoveringLine.value = null
+    hoveringStation.value = null
+  }
 
   return {
     dataset,
@@ -64,6 +69,7 @@ export const useAppStore = defineStore('app', () => {
     setDetailCity,
     setHoveringLine,
     setHoveringStation,
+    resetSelection,
   }
 })
 

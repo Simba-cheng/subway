@@ -19,7 +19,7 @@ const deckgl = ref<MapboxOverlay | null>(null)
 
 const store = useAppStore()
 const { dataset, selectedLine, hoveringLine, hoveringStation, selectedCities } = storeToRefs(store)
-const { selectLine, setDetailCity } = store
+const { selectLine, setDetailCity, resetSelection } = store
 const zoom = ref<number>(0)
 
 watchEffect(async () => {
@@ -67,7 +67,6 @@ const hoverPosition = ref<{ x: number; y: number }>({ x: 0, y: 0 })
 async function onMapCreated(mapInstance: any) {
   const DeckOverlay = await import('@deck.gl/mapbox/typed').then(module => module.MapboxOverlay)
   deckgl.value = new DeckOverlay({
-    debug: true,
     pickingRadius: 4,
     onHover: (info) => {
       const source = info.sourceLayer?.root.props.data as Line
@@ -94,6 +93,7 @@ function onZoomend() {
 }
 
 function zoomToCity(city: City) {
+  resetSelection()
   map.value.fitBounds(city.bound, { padding: 25, duration: 800 })
 }
 
