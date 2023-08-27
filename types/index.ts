@@ -1,11 +1,11 @@
-import type { Color, Position } from '@deck.gl/core/typed'
+import type { Color } from '@deck.gl/core/typed'
 
 export type Bound = [[number, number], [number, number]]
 
 export interface Station {
   id: string
   name: string
-  coord: Position
+  coord: [number, number]
 }
 
 export interface Line {
