@@ -3,12 +3,11 @@ import { CompositeLayer } from '@deck.gl/core/typed'
 import { PathLayer } from '@deck.gl/layers/typed'
 import type { Line } from '~/types'
 
-class LineLayer extends CompositeLayer<{ id: string; data: Line; selected?: boolean; stationVisible?: boolean }> {
+class LineLayer extends CompositeLayer<{ id: string; data: Line; selected?: boolean }> {
   renderLayers() {
     const id = this.props.id
     const line = this.props.data
     const selected = this.props.selected
-    const stationVisible = this.props.stationVisible ?? true
 
     if (!line)
       return []

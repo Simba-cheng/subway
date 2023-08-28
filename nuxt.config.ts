@@ -1,8 +1,6 @@
 import { appDescription } from './constants/index'
 
 export default defineNuxtConfig({
-  alias: {
-  },
   runtimeConfig: {
     public: {
       MAP_BOX_TOKEN: process.env.MAP_BOX_TOKEN,
