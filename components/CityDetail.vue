@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia'
 import { X } from 'lucide-vue-next'
 import { useAppStore } from '~/store/app.store'
 import type { Line } from '~/types'
+import { useInteractorStore } from '~/store/interactor.store'
 
 const emits = defineEmits<{
   (e: 'line-select', line: Line): void
@@ -11,7 +12,7 @@ const emits = defineEmits<{
 
 const store = useAppStore()
 const { detailCity } = storeToRefs(store)
-const { setHoveringLine, selectLine } = store
+const { setFocusedLine, setHoveringLine } = useInteractorStore()
 </script>
 
 <template>
@@ -24,7 +25,7 @@ const { setHoveringLine, selectLine } = store
       <li
         v-for="line in detailCity.lines" :key="line.id" class="relative" @click="() => {
           emits('line-select', line)
-          selectLine(line)
+          setFocusedLine(line)
         }" @mouseenter="() => setHoveringLine(line)" @mouseleave="() => setHoveringLine(null)"
       >
         <div class="hover:bg-zinc-50 rounded px-2 py-1 flex items-center cursor-pointer">
