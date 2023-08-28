@@ -15,7 +15,7 @@ export function useDataset() {
           cityId: city.id,
           name: line.name,
           bound: getLineBounds(stations),
-          color: hexRgb(line.color, { format: 'array', alpha: 0.95 }),
+          color: hexRgb(line.color, { format: 'array', alpha: 1 }),
           stations: correctStations(polyline, stations),
           polyline,
         }

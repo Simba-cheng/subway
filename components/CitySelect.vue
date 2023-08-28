@@ -14,6 +14,11 @@ const store = useAppStore()
 const { isCitySelected, selectCity, deselectCity, setDetailCity } = store
 const { dataset, selectedCities } = storeToRefs(store)
 const isOpen = ref(true)
+
+watchEffect(() => {
+  if (selectedCities.value.size === 0)
+    isOpen.value = true
+})
 </script>
 
 <template>
