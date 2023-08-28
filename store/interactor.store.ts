@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import type { Line, Station } from '~/types'
 
 interface Position {
@@ -28,7 +28,7 @@ export const useInteractorStore = defineStore('interactor', () => {
     if (focusedLine.value)
       return
     hoveringStation.value = station
-    hoveringLine.value = line
+    station && (hoveringLine.value = line)
   }
   const setHoveringPosition = (position: Position) => {
     hoveringPosition.value = position
@@ -54,3 +54,6 @@ export const useInteractorStore = defineStore('interactor', () => {
     reset,
   }
 })
+
+if (import.meta.hot)
+  import.meta.hot.accept(acceptHMRUpdate(useInteractorStore, import.meta.hot))
