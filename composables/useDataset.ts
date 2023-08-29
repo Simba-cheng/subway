@@ -15,7 +15,8 @@ export function useDataset() {
           cityId: city.id,
           name: line.name,
           bound: getLineBounds(stations),
-          color: hexRgb(line.color, { format: 'array', alpha: 1 }),
+          // FIXME alpha通道数值不对劲
+          color: hexRgb(line.color, { format: 'array', alpha: 10 }),
           stations: correctStations(polyline, stations),
           polyline,
         }
