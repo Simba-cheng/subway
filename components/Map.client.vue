@@ -22,12 +22,14 @@ const { setDetailCity } = appStore
 const { setFocusedLine, reset: resetInteractors } = interactorStore
 
 watchEffect(async () => {
+  const zoom = mapRef.value?.getZoom() || 0
+
   const selectedLineLayer = focusedLine.value
     ? new LineDetailLayer({
       id: 'hoveringline',
       data: focusedLine.value,
       pickable: true,
-      labels: true,
+      labels: zoom >= 11,
       onClick() {
         setFocusedLine(null)
       },
@@ -50,8 +52,6 @@ watchEffect(async () => {
     : null
 
   const cities = dataset.value.filter(city => selectedCities.value.has(city))
-
-  const zoom = mapRef.value?.getZoom() || 0
 
   const lineLayers = cities.map(city => city.lines.map(line => [new LineLayer({
     id: line.id,
