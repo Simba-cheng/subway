@@ -23,7 +23,7 @@ const { setFocusedLine, setHoveringLine } = useInteractorStore()
       :initial="{ opacity: 0.95, y: -50 }"
       :animate="{ opacity: 1, y: 0 }"
       :exit="{ opacity: 0, y: -50 }"
-      class="fixed left-28 top-4 bg-white text-xs p-2 rounded-lg"
+      class="bg-white text-xs p-2 rounded-lg"
     >
       <h3 class="flex items-center">
         <span>{{ detailCity.name }}</span>

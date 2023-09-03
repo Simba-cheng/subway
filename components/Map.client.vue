@@ -83,20 +83,23 @@ function zoomToLine(line: Line) {
 
 <template>
   <MapContainerClient ref="mapRef" :layers="layers" />
-  <section class="relative z-[2]">
+  <section class="fixed left-4 z-[2] inset-y-4 flex items-start">
     <CitySelect
       @on-zoom="zoomToCity"
       @city-select="zoomToCity"
     />
 
-    <CityDetail
-      @line-select="(line: Line) => {
-        zoomToLine(line)
-      }"
-      @close="() => setDetailCity(null)"
-    />
+    <div class="ml-3">
+      <CityDetail
+        @line-select="(line: Line) => {
+          zoomToLine(line)
+        }"
+        @close="() => setDetailCity(null)"
+      />
+    </div>
+
     <LineDetail
-      @station-click="(station:Station) => {
+      @station-click="(station: Station) => {
         mapRef?.flyTo({
           center: station.coord,
           essential: true,
