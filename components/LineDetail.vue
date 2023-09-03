@@ -16,7 +16,7 @@ const { focusedLine } = storeToRefs(useInteractorStore())
     <Motion
       v-if="!!focusedLine"
       :key="focusedLine.id" :initial="{ opacity: 0, x: 50 }" :animate="{ opacity: 1, x: 0 }" :exit="{ opacity: 0, x: 50 }"
-      class="fixed right-4 top-4 backdrop-blur-lg bg-white py-4 pb-0 rounded-lg min-w-[70px]"
+      class="fixed right-4 top-4 backdrop-blur-lg bg-white py-4 pb-0 rounded-lg min-w-[70px] z-[2]"
     >
       <h3 class="text-center text-xs text-zinc-700">
         {{ focusedLine.name }}

@@ -65,19 +65,26 @@ watchEffect(async () => {
   })
 })
 
+function getBoundsPadding() {
+  return {
+    top: 25,
+    right: 150,
+    bottom: 25,
+    left: (selectorsRef.value?.clientWidth || 0) + 25,
+  }
+}
+
 function zoomToCity(city: City) {
   resetInteractors()
-  mapRef.value?.fitBounds(city.bound, { padding: 25, duration: 800 })
+  mapRef.value?.fitBounds(city.bound, {
+    padding: getBoundsPadding(),
+    duration: 800,
+  })
 }
 
 function zoomToLine(line: Line) {
   mapRef.value?.fitBounds(line.bound, {
-    padding: {
-      top: 25,
-      right: 150,
-      bottom: 25,
-      left: (selectorsRef.value?.clientWidth || 0) + 25,
-    },
+    padding: getBoundsPadding(),
   })
 }
 </script>
