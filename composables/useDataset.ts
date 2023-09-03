@@ -17,7 +17,7 @@ export function useDataset() {
           bound: getLineBounds(stations),
           // FIXME alpha通道数值不对劲
           color: hexRgb(line.color, { format: 'array', alpha: 10 }),
-          stations: correctStations(polyline, stations),
+          stations,
           polyline,
         }
       })
