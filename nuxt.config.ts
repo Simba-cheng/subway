@@ -1,9 +1,12 @@
+import { statSync } from 'node:fs'
+import { join } from 'node:path'
 import { appDescription } from './constants/index'
 
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       MAP_BOX_TOKEN: process.env.MAP_BOX_TOKEN,
+      DATA_UPDATED_AT: statSync(join(__dirname, './datasource/data.json')).mtime,
     },
   },
 

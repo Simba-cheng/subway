@@ -55,7 +55,7 @@ watchEffect(() => {
       <div v-if="selectedCities.size" class="my-1 flex justify-center">
         <ChevronUp :size="14" class="transition-transform cursor-pointer" :class="!isOpen && 'rotate-180'" @click="() => isOpen = !isOpen" />
       </div>
-      <section class="grow overflow-scroll scrollbar-none transition-all" :class="!isOpen && `max-h-0`">
+      <section class="grow overflow-scroll scrollbar-none pb-2" :class="!isOpen && `max-h-0`">
         <ul class="select-none">
           <li
             v-for="city in dataset.filter(city => !isCitySelected(city))" :key="city.id" class="group text-xs text-zinc-400 p-1 flex items-center cursor-pointer hover:bg-zinc-100 rounded hover:text-zinc-500"
