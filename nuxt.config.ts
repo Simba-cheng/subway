@@ -6,6 +6,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       MAP_BOX_TOKEN: process.env.MAP_BOX_TOKEN,
+      MAP_URL: process.env.MAP_URL,
       DATA_UPDATED_AT: statSync(join(__dirname, './datasource/data.json')).mtime,
     },
   },

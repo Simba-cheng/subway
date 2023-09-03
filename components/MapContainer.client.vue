@@ -65,6 +65,6 @@ defineExpose({ fitBounds, flyTo, getZoom })
 <template>
   <MapboxMap
     class="w-screen h-screen" :access-token="config.public['MAP_BOX_TOKEN']"
-    map-style="mapbox://styles/mapbox/light-v10?optimize=true" :center="mapCenter" :zoom="zoom" @mb-created="onMapCreated" @mb-zoomend="onZoomend"
+    :map-style="config.public['MAP_URL']" :center="mapCenter" :zoom="zoom" @mb-created="onMapCreated" @mb-zoomend="onZoomend"
   />
 </template>
