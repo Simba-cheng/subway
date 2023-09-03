@@ -12,6 +12,7 @@ import StationsLayer from '~/layers/stations.layer'
 import { useInteractorStore } from '~/store/interactor.store'
 
 const mapRef = ref<InstanceType<typeof MapContainer> | null>(null)
+const selectorsRef = ref<HTMLDivElement>()
 const layers = ref<LayersList>()
 
 const appStore = useAppStore()
@@ -75,7 +76,7 @@ function zoomToLine(line: Line) {
       top: 25,
       right: 150,
       bottom: 25,
-      left: 25,
+      left: (selectorsRef.value?.clientWidth || 0) + 25,
     },
   })
 }
@@ -83,7 +84,7 @@ function zoomToLine(line: Line) {
 
 <template>
   <MapContainerClient ref="mapRef" :layers="layers" />
-  <section class="fixed left-4 z-[2] inset-y-4 flex items-start">
+  <section ref="selectorsRef" class="fixed left-4 z-[2] inset-y-4 flex items-start">
     <CitySelect
       @on-zoom="zoomToCity"
       @city-select="zoomToCity"
@@ -97,16 +98,15 @@ function zoomToLine(line: Line) {
         @close="() => setDetailCity(null)"
       />
     </div>
-
-    <LineDetail
-      @station-click="(station: Station) => {
-        mapRef?.flyTo({
-          center: station.coord,
-          essential: true,
-          zoom: 15,
-        })
-      }"
-    />
   </section>
+  <LineDetail
+    @station-click="(station: Station) => {
+      mapRef?.flyTo({
+        center: station.coord,
+        essential: true,
+        zoom: 15,
+      })
+    }"
+  />
   <Tooltip />
 </template>
