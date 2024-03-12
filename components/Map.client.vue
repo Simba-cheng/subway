@@ -107,7 +107,7 @@ function zoomToLine(line: Line) {
     </div>
   </section>
   <LineDetail
-    @station-click="(station: Station) => {
+    @station-click="(station) => {
       mapRef?.flyTo({
         center: station.coord,
         essential: true,

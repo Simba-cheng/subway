@@ -1,11 +1,11 @@
 import { CompositeLayer } from '@deck.gl/core/typed'
 
 import { PathLayer } from '@deck.gl/layers/typed'
-import type { DeepReadonly } from 'nuxt/dist/app/compat/capi'
+
 import StationsLayer from './stations.layer'
 import type { Line } from '~/types'
 
-class LineDetailLayer extends CompositeLayer<{ id: string; data: Line | DeepReadonly<Line>; pickable?: boolean; labels?: boolean }> {
+class LineDetailLayer extends CompositeLayer<{ id: string; data: Line; pickable?: boolean; labels?: boolean }> {
   renderLayers() {
     const line = this.props.data as Line
 

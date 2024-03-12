@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { X } from 'lucide-vue-next'
-import { Motion, Presence } from 'motion/vue'
+import { Motion, Presence } from '@oku-ui/motion'
 import { useAppStore } from '~/store/app.store'
 import type { Line } from '~/types'
 import { useInteractorStore } from '~/store/interactor.store'
