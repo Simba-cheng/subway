@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
-import { useInteractorStore } from './interactor.store'
 import type { City } from '~/types'
+import { useInteractorStore } from './interactor.store'
 
 export const useAppStore = defineStore('app', () => {
   const dataset = useDataset()
@@ -8,6 +8,18 @@ export const useAppStore = defineStore('app', () => {
   const selectedCities = ref<Set<City>>(new Set())
 
   const detailCity = ref<City | null>(null)
+
+  // Initialize default selected cities
+  const defaultCityIds = ['4401', '4403', '8100', '4419'] // Guangzhou, Shenzhen, Hong Kong, Dongguan
+
+  // Set default cities when dataset is loaded
+  nextTick(() => {
+    defaultCityIds.forEach((cityId) => {
+      const city = dataset.value.find(c => c.id === cityId)
+      if (city)
+        selectedCities.value.add(city)
+    })
+  })
 
   const selectCity = (city: City) => {
     selectedCities.value.add(city)
