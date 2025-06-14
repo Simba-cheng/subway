@@ -1,1 +1,1 @@
-export const appName = 'Subway'
+export const appName = 'Subway | cuvii.dev'

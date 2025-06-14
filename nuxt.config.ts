@@ -1,6 +1,5 @@
 import { statSync } from 'node:fs'
 import { join } from 'node:path'
-import { appDescription } from './constants/index'
 
 export default defineNuxtConfig({
   runtimeConfig: {
@@ -52,7 +51,6 @@ export default defineNuxtConfig({
       ],
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: appDescription },
         { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' },
       ],
       script: [
