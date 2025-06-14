@@ -1,2 +1,1 @@
-export const appName = 'MetroX'
-export const appDescription = 'MetroX'
+export const appName = 'Subway'
