@@ -29,9 +29,6 @@
 - 📅 **数据时间**: 截止至 2023年6月
 - 🏙️ **覆盖城市**: 包含北京、上海、广州、深圳等主要城市
 
-## 开发环境
-
-推荐使用 [VS Code](https://code.visualstudio.com/) 配合 [Volar](https://github.com/johnsoncodehk/volar) 插件获得最佳开发体验。
 
 ## 许可证
 
