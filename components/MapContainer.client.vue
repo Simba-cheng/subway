@@ -16,6 +16,12 @@ const deckgl = ref<MapboxOverlay | null>(null)
 const zoom = ref<number>(8)
 const { setHoveringLine, setHoveringStation, setHoveringPosition } = useInteractorStore()
 
+// Set bounds to China's geographical boundaries with buffer
+const chinaBounds = [
+  [65.0, 15.0], // Southwest coordinates (with more buffer on the left)
+  [140.0, 56.0], // Northeast coordinates (with buffer)
+]
+
 watchEffect(() => {
   deckgl.value?.setProps({ layers: props.layers })
 })
@@ -65,6 +71,6 @@ defineExpose({ fitBounds, flyTo, getZoom })
 <template>
   <MapboxMap
     class="w-screen h-screen" :access-token="config.public['MAP_BOX_TOKEN']"
-    :map-style="config.public['MAP_URL']" :center="mapCenter" :zoom="zoom" @mb-created="onMapCreated" @mb-zoomend="onZoomend"
+    :map-style="config.public['MAP_URL']" :center="mapCenter" :zoom="zoom" :max-bounds="chinaBounds" @mb-created="onMapCreated" @mb-zoomend="onZoomend"
   />
 </template>
