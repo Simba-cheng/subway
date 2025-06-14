@@ -11,7 +11,7 @@ const emits = defineEmits<{
 }>()
 
 const store = useAppStore()
-const { isCitySelected, toggleCity, setDetailCity, isCityPinned, isCityActive } = store
+const { isCitySelected, toggleCity, setDetailCity, isCityPinned, isCityActive, setActiveCity } = store
 const { dataset, selectedCities } = storeToRefs(store)
 const isOpen = ref(true)
 
@@ -29,7 +29,7 @@ watchEffect(() => {
           v-for="city in dataset" :key="city.id"
           class="group text-xs text-zinc-400 p-1 flex items-center cursor-pointer hover:bg-zinc-100 rounded hover:text-zinc-500"
           @click="() => {
-            toggleCity(city)
+            setActiveCity(city)
             emits('city-select', city)
           }"
         >

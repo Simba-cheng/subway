@@ -72,6 +72,14 @@ export const useAppStore = defineStore('app', () => {
     }
   }
 
+  const setActiveCity = (city: City) => {
+    if (activeCities.value.has(city) && activeCities.value.size === 1)
+      return
+
+    setAsOnlyActiveCity(city)
+    useInteractorStore().reset()
+  }
+
   const setDetailCity = (city: City | null) =>
     detailCity.value = city
 
@@ -91,6 +99,7 @@ export const useAppStore = defineStore('app', () => {
     unpinCity,
     deselectCity,
     setAsOnlyActiveCity,
+    setActiveCity,
   }
 })
 
