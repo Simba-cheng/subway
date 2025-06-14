@@ -1,9 +1,5 @@
 # 🚇 中国城市地铁可视化
 
-<p align="center">
-<img src="https://user-images.githubusercontent.com/11247099/140462375-7b7ac4db-35b7-453c-8a05-13d8d20282c4.png" width="600"/>
-</p>
-
 <h2 align="center">
 基于 Vue3 和 Deck.gl 的中国城市地铁可视化应用
 </h2><br>
