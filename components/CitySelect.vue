@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { List, MapPin, MapPinOff } from 'lucide-vue-next'
+import { Github, List, MapPin, MapPinOff, Twitter } from 'lucide-vue-next'
 import { useAppStore } from '~/store/app.store'
 import type { City } from '~/types'
 
@@ -23,6 +23,28 @@ watchEffect(() => {
 
 <template>
   <div class=" bg-white rounded text-zinc-800 text-xs p-2 pb-2 flex flex-col flex-1 max-h-full">
+    <!-- Social Media Links Header -->
+    <header class="flex justify-center items-center gap-2 pb-2 mb-2 border-b border-zinc-100">
+      <a
+        href="https://github.com/thecuvii/subway"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-zinc-400 hover:text-zinc-600 transition-colors p-1 rounded hover:bg-zinc-50"
+        title="GitHub"
+      >
+        <Github :size="14" />
+      </a>
+      <a
+        href="https://x.com/thecuvii"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-zinc-400 hover:text-zinc-600 transition-colors p-1 rounded hover:bg-zinc-50"
+        title="X (Twitter)"
+      >
+        <Twitter :size="14" />
+      </a>
+    </header>
+
     <section class="grow overflow-scroll scrollbar-none" :class="!isOpen && `max-h-0`">
       <ul class="select-none">
         <li
