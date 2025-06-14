@@ -6,12 +6,9 @@ export const useAppStore = defineStore('app', () => {
   const dataset = useDataset()
 
   const pinnedCities = ref<Set<City>>(new Set())
-  const activeCity = ref<City | null>(null)
+  const activeCities = ref<Set<City>>(new Set())
   const selectedCities = computed(() => {
-    const cities = new Set(pinnedCities.value)
-    if (activeCity.value)
-      cities.add(activeCity.value)
-    return cities
+    return new Set([...pinnedCities.value, ...activeCities.value])
   })
 
   const detailCity = ref<City | null>(null)
@@ -24,21 +21,24 @@ export const useAppStore = defineStore('app', () => {
     defaultCityIds.forEach((cityId) => {
       const city = dataset.value.find(c => c.id === cityId)
       if (city)
-        pinnedCities.value.add(city)
+        activeCities.value.add(city)
     })
   })
 
   const isCityPinned = (city: City) => pinnedCities.value.has(city)
-  const isCityActive = (city: City) => activeCity.value === city
+  const isCityActive = (city: City) => activeCities.value.has(city)
   const isCitySelected = (city: City) => isCityPinned(city) || isCityActive(city)
 
-  const setAsActiveCity = (city: City) => {
-    activeCity.value = city
+  const setAsOnlyActiveCity = (city: City) => {
+    activeCities.value.clear()
+    activeCities.value.add(city)
   }
 
   const pinCity = (city: City) => {
+    if (activeCities.value.has(city))
+      activeCities.value.delete(city)
+
     pinnedCities.value.add(city)
-    activeCity.value = null
   }
 
   const unpinCity = (city: City) => {
@@ -49,7 +49,7 @@ export const useAppStore = defineStore('app', () => {
     if (isCityPinned(city))
       unpinCity(city)
     if (isCityActive(city))
-      activeCity.value = null
+      activeCities.value.delete(city)
 
     const { focusedLine, setFocusedLine } = useInteractorStore()
     if (focusedLine?.cityId === city.id)
@@ -67,7 +67,7 @@ export const useAppStore = defineStore('app', () => {
       pinCity(city)
     }
     else {
-      setAsActiveCity(city)
+      setAsOnlyActiveCity(city)
       useInteractorStore().reset()
     }
   }
@@ -80,7 +80,7 @@ export const useAppStore = defineStore('app', () => {
     selectedCities,
     detailCity,
     pinnedCities,
-    activeCity,
+    activeCities,
 
     isCityPinned,
     isCityActive,
@@ -90,7 +90,7 @@ export const useAppStore = defineStore('app', () => {
     pinCity,
     unpinCity,
     deselectCity,
-    setAsActiveCity,
+    setAsOnlyActiveCity,
   }
 })
 
