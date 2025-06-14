@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { List, X } from 'lucide-vue-next'
+import { List, MapPin, MapPinOff } from 'lucide-vue-next'
 import { useAppStore } from '~/store/app.store'
 import type { City } from '~/types'
 
@@ -11,7 +11,7 @@ const emits = defineEmits<{
 }>()
 
 const store = useAppStore()
-const { isCitySelected, selectCity, deselectCity, setDetailCity } = store
+const { isCitySelected, toggleCity, setDetailCity, isCityPinned, isCityActive } = store
 const { dataset, selectedCities } = storeToRefs(store)
 const isOpen = ref(true)
 
@@ -29,7 +29,7 @@ watchEffect(() => {
           v-for="city in dataset" :key="city.id"
           class="group text-xs text-zinc-400 p-1 flex items-center cursor-pointer hover:bg-zinc-100 rounded hover:text-zinc-500"
           @click="() => {
-            selectCity(city)
+            toggleCity(city)
             emits('city-select', city)
           }"
         >
@@ -47,11 +47,12 @@ watchEffect(() => {
             </span>
             <span
               class="cursor-pointer" @click.stop="() => {
-                deselectCity(city)
+                toggleCity(city)
                 emits('city-unselect', city)
               }"
             >
-              <X class="text-red-500 hover:scale-125 transition-transform" :size="12" />
+              <MapPin v-if="isCityActive(city)" class="text-blue-500 hover:scale-125 transition-transform" :size="12" />
+              <MapPinOff v-else-if="isCityPinned(city)" class="text-red-500 hover:scale-125 transition-transform" :size="12" />
             </span>
           </span>
         </li>

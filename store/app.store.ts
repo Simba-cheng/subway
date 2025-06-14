@@ -5,7 +5,14 @@ import { useInteractorStore } from './interactor.store'
 export const useAppStore = defineStore('app', () => {
   const dataset = useDataset()
 
-  const selectedCities = ref<Set<City>>(new Set())
+  const pinnedCities = ref<Set<City>>(new Set())
+  const activeCity = ref<City | null>(null)
+  const selectedCities = computed(() => {
+    const cities = new Set(pinnedCities.value)
+    if (activeCity.value)
+      cities.add(activeCity.value)
+    return cities
+  })
 
   const detailCity = ref<City | null>(null)
 
@@ -17,16 +24,33 @@ export const useAppStore = defineStore('app', () => {
     defaultCityIds.forEach((cityId) => {
       const city = dataset.value.find(c => c.id === cityId)
       if (city)
-        selectedCities.value.add(city)
+        pinnedCities.value.add(city)
     })
   })
 
-  const selectCity = (city: City) => {
-    selectedCities.value.add(city)
-    useInteractorStore().reset()
+  const isCityPinned = (city: City) => pinnedCities.value.has(city)
+  const isCityActive = (city: City) => activeCity.value === city
+  const isCitySelected = (city: City) => isCityPinned(city) || isCityActive(city)
+
+  const setAsActiveCity = (city: City) => {
+    activeCity.value = city
   }
+
+  const pinCity = (city: City) => {
+    pinnedCities.value.add(city)
+    activeCity.value = null
+  }
+
+  const unpinCity = (city: City) => {
+    pinnedCities.value.delete(city)
+  }
+
   const deselectCity = (city: City) => {
-    selectedCities.value.delete(city)
+    if (isCityPinned(city))
+      unpinCity(city)
+    if (isCityActive(city))
+      activeCity.value = null
+
     const { focusedLine, setFocusedLine } = useInteractorStore()
     if (focusedLine?.cityId === city.id)
       setFocusedLine(null)
@@ -34,8 +58,19 @@ export const useAppStore = defineStore('app', () => {
     if (detailCity.value === city)
       detailCity.value = null
   }
-  const isCitySelected = (city: City) => selectedCities.value.has(city)
-  const toggleCity = (city: City) => isCitySelected(city) ? deselectCity(city) : selectCity(city)
+
+  const toggleCity = (city: City) => {
+    if (isCityPinned(city)) {
+      unpinCity(city)
+    }
+    else if (isCityActive(city)) {
+      pinCity(city)
+    }
+    else {
+      setAsActiveCity(city)
+      useInteractorStore().reset()
+    }
+  }
 
   const setDetailCity = (city: City | null) =>
     detailCity.value = city
@@ -44,12 +79,18 @@ export const useAppStore = defineStore('app', () => {
     dataset,
     selectedCities,
     detailCity,
+    pinnedCities,
+    activeCity,
 
-    selectCity,
-    deselectCity,
+    isCityPinned,
+    isCityActive,
     isCitySelected,
     toggleCity,
     setDetailCity,
+    pinCity,
+    unpinCity,
+    deselectCity,
+    setAsActiveCity,
   }
 })
 
