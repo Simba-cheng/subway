@@ -34,6 +34,14 @@ export default defineNuxtConfig({
         target: 'esnext',
       },
     },
+    routeRules: {
+      '/**': {
+        headers: {
+          'X-Frame-Options': 'DENY',
+          'Content-Security-Policy': 'frame-ancestors \'none\'',
+        },
+      },
+    },
     // prerender: {
     //   crawlLinks: false,
     //   routes: ['/'],
