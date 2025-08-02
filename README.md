@@ -1,5 +1,9 @@
 # 🚇 中国城市地铁可视化
 
+<div align="center">
+  <img src="./preview.png" alt="地铁可视化预览" width="800">
+</div>
+
 <h2 align="center">
 基于 Vue3 和 Deck.gl 的中国城市地铁可视化应用
 </h2><br>
